@@ -4,7 +4,7 @@ import {useDispatch} from 'react-redux';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {BookStackNavigator, MovieStackNavigator} from './StackNav';
 import CustomDrawerContent from './Custom';
-import {TEST_REDUX} from '../reducers/BookList';
+import {MY_BOOKLIST_DATA} from '../reducers/BookList';
 import realm from '../db';
 
 const Drawer = createDrawerNavigator();
@@ -15,7 +15,7 @@ const DrawerNavigator = ({toggleTheme}) => {
   useEffect(() => {
     const BookDate = realm.objects('User');
     const SortBookDate = BookDate.sorted('createtime');
-    dispatch({type: TEST_REDUX, data: SortBookDate});
+    dispatch({type: MY_BOOKLIST_DATA, data: SortBookDate});
   }, []);
 
   return (

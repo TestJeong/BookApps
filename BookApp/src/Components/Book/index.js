@@ -6,6 +6,7 @@ import styled from 'styled-components/native';
 import Realm, {User} from 'realm';
 import realm from '../../db';
 import {TEST_REDUXSS} from '../../reducers/BookList';
+import KaKao_Book_API from '../../Api/BookAPI';
 
 const ViewContainer = styled.View`
   margin-right: 80px;
