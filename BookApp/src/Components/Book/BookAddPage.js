@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, ScrollView, Button, Image} from 'react-native';
+import {Text, View, ScrollView, Button, Image, FlatList} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
 import {TextInput} from 'react-native-paper';
 import realm from '../../db';
@@ -10,14 +10,12 @@ import {
   SERACH_BOOK_DATA_REQUEST,
   SERACH_BOOK_DATA_RESET,
 } from '../../reducers/BookList';
+import renderItem from './SearchListView';
 
-const InputViewBox = styled.View`
-  margin-bottom: 10px;
-`;
+const InputViewBox = styled.View``;
 
 const Container = styled.View`
   flex: 1;
-
   padding: 10px;
 `;
 
@@ -25,9 +23,7 @@ const SearchInput = styled(TextInput)`
   height: 40px;
 `;
 
-const KeyboradBox = styled(KeyboardAwareScrollView)`
-  flex: 1;
-
+const KeyboradBox = styled(KeyboardAwareFlatList)`
   margin-top: 10px;
 `;
 
@@ -53,25 +49,26 @@ const BookAddPage = ({navigation}) => {
 
   return (
     <Container>
-      <KeyboradBox contentContainerStyle={{flex: 1}}>
-        <InputViewBox>
-          <SearchInput
-            placeholder="검색어를 입력해주세요"
-            underlineColor="green"
-            selectionColor="blue"
-            value={inputValue}
-            onChangeText={(text) => setInputValue(text)}
-            onSubmitEditing={tagInputEnterEventHandler}
-          />
-        </InputViewBox>
-        <Text>테스</Text>
-        <Image
-          source={{
-            url:
-              'https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F612102%3Ftimestamp%3D20201223143952',
-          }}
+      <InputViewBox>
+        <SearchInput
+          placeholder="검색어를 입력해주세요"
+          underlineColor="green"
+          selectionColor="blue"
+          value={inputValue}
+          onChangeText={(text) => setInputValue(text)}
+          onSubmitEditing={tagInputEnterEventHandler}
         />
-      </KeyboradBox>
+      </InputViewBox>
+      <KeyboradBox
+        data={serach_book_data}
+        renderItem={renderItem}
+        keyExtractor={(renderItem, index) => index.toString()}></KeyboradBox>
+
+      {/*  <FlatList
+        data={serach_book_data}
+        renderItem={renderItem}
+        keyExtractor={(renderItem, index) => index.toString()}
+      /> */}
     </Container>
   );
 };
