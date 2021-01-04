@@ -27,7 +27,7 @@ const renderItem = ({item}) => {
   return (
     <ContainerView>
       <ImageContentView>
-        <ImageView source={{url: item.thumbnail}} />
+        <ImageView source={{uri: item.thumbnail}} />
       </ImageContentView>
       <TextContentView>
         <Text>{item.title}</Text>
