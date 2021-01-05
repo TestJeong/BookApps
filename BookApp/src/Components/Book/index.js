@@ -47,9 +47,9 @@ const BookContainer = ({navigation}) => {
       type: TEST_REDUXSS,
       data: realm.write(() => {
         realm.create('User', {
-          id: '1500',
-          name: '1600',
-          email: '1700@fffgmail.com',
+          id: '1700',
+          name: '1800',
+          email: '',
           createtime: day,
         });
       }),

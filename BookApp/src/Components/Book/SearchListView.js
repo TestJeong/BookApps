@@ -1,8 +1,10 @@
-import React from 'react';
-import {View, Text, Image} from 'react-native';
+import React, {useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 
-const ContainerView = styled.View`
+const ContainerView = styled.TouchableOpacity`
   border-bottom-width: 1px;
   border-bottom-color: gray;
   flex-direction: row;
@@ -23,20 +25,27 @@ const TextContentView = styled.View`
   margin: 10px 0px;
 `;
 
-const renderItem = ({item}) => {
+const SearchListView = ({bookData}) => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const book_Selection_Data = () => {
+    navigation.navigate('Detail');
+    console.log('bookTest', bookData.item);
+  };
   return (
-    <ContainerView>
+    <ContainerView onPress={book_Selection_Data}>
       <ImageContentView>
-        <ImageView source={{uri: item.thumbnail}} />
+        <ImageView source={{uri: bookData.item.thumbnail}} />
       </ImageContentView>
       <TextContentView>
-        <Text>{item.title}</Text>
-        <Text>{item.authors} 저</Text>
-        <Text>{item.publisher}</Text>
-        <Text>{item.datetime.slice(0, 10)} 출간</Text>
+        <Text>{bookData.item.title}</Text>
+        <Text>{bookData.item.authors} 저</Text>
+        <Text>{bookData.item.publisher}</Text>
+        <Text>{bookData.item.datetime} 출간</Text>
       </TextContentView>
     </ContainerView>
   );
 };
 
-export default renderItem;
+export default SearchListView;

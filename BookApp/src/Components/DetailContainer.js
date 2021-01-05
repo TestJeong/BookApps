@@ -32,7 +32,7 @@ const DetailContainer = ({route}) => {
 
   useEffect(() => {});
 
-  const olcae = user_book_data.map((data) => data.name);
+  const olcae = realm.objects('User');
 
   return (
     <Container>
@@ -40,7 +40,7 @@ const DetailContainer = ({route}) => {
         <Viewttt>
           <Text>추가한 항목들의 리스트 입니다..</Text>
 
-          <Text>{olcae}</Text>
+          <Text>{olcae.bookRecord}</Text>
         </Viewttt>
       </ScrollView>
     </Container>

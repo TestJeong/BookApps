@@ -10,7 +10,7 @@ import {
   SERACH_BOOK_DATA_REQUEST,
   SERACH_BOOK_DATA_RESET,
 } from '../../reducers/BookList';
-import renderItem from './SearchListView';
+import SearchListView from './SearchListView';
 
 const InputViewBox = styled.View``;
 
@@ -61,14 +61,9 @@ const BookAddPage = ({navigation}) => {
       </InputViewBox>
       <KeyboradBox
         data={serach_book_data}
-        renderItem={renderItem}
-        keyExtractor={(renderItem, index) => index.toString()}></KeyboradBox>
-
-      {/*  <FlatList
-        data={serach_book_data}
-        renderItem={renderItem}
-        keyExtractor={(renderItem, index) => index.toString()}
-      /> */}
+        renderItem={(item) => <SearchListView bookData={item} />}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </Container>
   );
 };
