@@ -26,40 +26,16 @@ const TextColume = styled.Text`
 `;
 
 const BookContainer = ({navigation}) => {
-  const dispatch = useDispatch();
   const {colors} = useTheme();
   useEffect(() => {
     Realm.open({}).then((realm) => {
-      console.log('Realm is located at: ' + realm.path);
+      console.log('Realm is located at: ' + realm.path.toString());
     });
   }, []);
-  var date = new Date().getDate(); //Current Date
-  var month = new Date().getMonth() + 1; //Current Month
-  var year = new Date().getFullYear(); //Current Year
-  var hours = new Date().getHours(); //Current Hours
-  var min = new Date().getMinutes(); //Current Minutes
-  var sec = new Date().getSeconds(); //Current Seconds
-  let day =
-    year + '-' + month + '-' + date + '-' + hours + '-' + min + '-' + sec;
-
-  const createUser = () => {
-    dispatch({
-      type: TEST_REDUXSS,
-      data: realm.write(() => {
-        realm.create('User', {
-          id: '1700',
-          name: '1800',
-          email: '',
-          createtime: day,
-        });
-      }),
-    });
-  };
 
   return (
     <Container>
       <ViewContainer>
-        <Button title="테스트 추가" onPress={createUser} />
         <TextColume
           style={{color: colors.text}}
           onPress={() => navigation.navigate('Detail')}>

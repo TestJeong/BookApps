@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
-import {API_KEY_KAKAO} from '@env';
+
 import {
   Text,
   View,
@@ -12,10 +11,9 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
-import Realm, {User} from 'realm';
+import DetailListView from './Book/DetailListView';
 import realm from '../db';
-import {TEST_REDUX} from '../reducers/BookList';
-import KaKao_Book_API from '../Api/BookAPI';
+import {MY_BOOKLIST_DATA} from '../reducers/BookList';
 
 const Viewttt = styled.View`
   justify-content: center;
@@ -23,26 +21,24 @@ const Viewttt = styled.View`
 
 const Container = styled.View`
   flex: 1;
-  align-items: center;
+  padding: 10px;
 `;
 
 const DetailContainer = ({route}) => {
-  const {user_book_data, location} = useSelector((state) => state.BookList);
-  const [booktitle, setbooktotle] = useState([]);
+  const dispatch = useDispatch();
+  const {user_book_data} = useSelector((state) => state.BookList);
 
-  useEffect(() => {});
-
-  const olcae = realm.objects('User');
+  const BookDate = realm.objects('User');
+  const SortBookDate = BookDate.sorted('createtime');
 
   return (
     <Container>
-      <ScrollView horizontal={true}>
-        <Viewttt>
-          <Text>추가한 항목들의 리스트 입니다..</Text>
-
-          <Text>{olcae.bookRecord}</Text>
-        </Viewttt>
-      </ScrollView>
+      <FlatList
+        keyExtractor={(item, index) => '#' + index}
+        numColumns={3}
+        data={SortBookDate}
+        renderItem={(item) => <DetailListView bookData={item} />}
+      />
     </Container>
   );
 };

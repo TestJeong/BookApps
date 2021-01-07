@@ -35,11 +35,11 @@ const BookAddPage = ({navigation}) => {
 
   const [inputValue, setInputValue] = useState('');
 
-  useEffect(() => {
+  /*   useEffect(() => {
     navigation.addListener('blur', () =>
       dispatch({type: SERACH_BOOK_DATA_RESET}),
     );
-  }, []);
+  }, []); */
 
   const tagInputEnterEventHandler = (e) => {
     console.log('event.nativeEvent ? ', e.nativeEvent);
