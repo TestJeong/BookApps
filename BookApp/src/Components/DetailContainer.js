@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 
 import {
   Text,
@@ -13,11 +13,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import DetailListView from './Book/DetailListView';
 import realm from '../db';
-import {MY_BOOKLIST_DATA} from '../reducers/BookList';
-
-const Viewttt = styled.View`
-  justify-content: center;
-`;
 
 const Container = styled.View`
   flex: 1;
@@ -28,15 +23,32 @@ const DetailContainer = ({route}) => {
   const dispatch = useDispatch();
   const {user_book_data} = useSelector((state) => state.BookList);
 
-  const BookDate = realm.objects('User');
-  const SortBookDate = BookDate.sorted('createtime');
+  useEffect(() => {
+    if (route.params.bookReTitle || route.params.post) {
+      realm.write(() => {
+        realm.create(
+          'User',
+          {
+            createtime: route.params.time,
+            bookName: route.params.bookReTitle,
+            bookRecord: route.params.post,
+          },
+          true,
+        );
+      });
+    }
+  }, [route.params.post, route.params.bookReTitle]);
+
+  /* const BookDate = realm.objects('User');
+  const SortBookDate = BookDate.sorted('createtime'); */
+  //data가 안나올때 redux말고 바로 Realm 데이터 사용
 
   return (
     <Container>
       <FlatList
         keyExtractor={(item, index) => '#' + index}
         numColumns={3}
-        data={SortBookDate}
+        data={user_book_data}
         renderItem={(item) => <DetailListView bookData={item} />}
       />
     </Container>

@@ -29,16 +29,22 @@ const KeyboradBox = styled(KeyboardAwareFlatList)`
 
 const BookAddPage = ({navigation}) => {
   const dispatch = useDispatch();
-  const {serach_book_data, serach_book_data_done} = useSelector(
+  const {serach_book_data, search_book_data_reset} = useSelector(
     (state) => state.BookList,
   );
 
   const [inputValue, setInputValue] = useState('');
 
-  /*   useEffect(() => {
+  useEffect(() => {
     navigation.addListener('blur', () =>
       dispatch({type: SERACH_BOOK_DATA_RESET}),
     );
+  }, []);
+
+  /*   useEffect(() => {
+    if (search_book_data_reset) {
+      dispatch({type: SERACH_BOOK_DATA_RESET});
+    }
   }, []); */
 
   const tagInputEnterEventHandler = (e) => {
@@ -61,6 +67,8 @@ const BookAddPage = ({navigation}) => {
       </InputViewBox>
       <KeyboradBox
         data={serach_book_data}
+        initialNumToRender={10}
+        windowSize={3}
         renderItem={(item) => <SearchListView bookData={item} />}
         keyExtractor={(item, index) => index.toString()}
       />

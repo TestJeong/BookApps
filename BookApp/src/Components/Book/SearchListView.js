@@ -74,7 +74,7 @@ const SearchListView = ({bookData}) => {
         <Text>{bookData.item.title}</Text>
         <Text>{bookData.item.authors} 저</Text>
         <Text>{bookData.item.publisher}</Text>
-        <Text>{bookData.item.datetime} 출간</Text>
+        <Text>{bookData.item.datetime.slice(0, 10)} 출간</Text>
       </TextContentView>
     </ContainerView>
   );

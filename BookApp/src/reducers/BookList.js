@@ -6,6 +6,8 @@ export const init = {
 
   user_book_load_data: [],
 
+  testData: [],
+
   serach_book_data_loading: false,
   serach_book_data_done: false,
   serach_book_data_error: null,
@@ -17,6 +19,8 @@ export const MY_BOOKLIST_DATA = 'MY_BOOKLIST_DATA';
 
 export const MY_BOOKLIST_DATA_ADD = 'MY_BOOKLIST_DATA_ADD';
 
+export const TEST_TEST = 'TEST_TEST';
+
 export const SERACH_BOOK_DATA_REQUEST = 'SERACH_BOOK_DATA_REQUEST';
 export const SERACH_BOOK_DATA_SUCCESS = 'SERACH_BOOK_DATA_SUCCESS';
 export const SERACH_BOOK_DATA_ERROR = 'SERACH_BOOK_DATA_ERROR';
@@ -25,6 +29,9 @@ export const SERACH_BOOK_DATA_RESET = 'SERACH_BOOK_DATA_RESET';
 const reducer = (state = init, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case TEST_TEST:
+        draft.testData = action.data;
+
       case MY_BOOKLIST_DATA:
         draft.user_book_data_done = true;
         draft.user_book_data = action.data;

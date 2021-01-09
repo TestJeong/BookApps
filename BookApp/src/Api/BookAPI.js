@@ -8,7 +8,9 @@ const KaKao_Book_API = async (term) => {
       {
         params: {
           query: term,
+          size: 50,
         },
+
         headers: {
           Authorization: `KakaoAK ${API_KEY_KAKAO}`,
         },
