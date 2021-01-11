@@ -4,8 +4,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
 import {TextInput} from 'react-native-paper';
-import realm from '../../db';
-import KaKao_Book_API from '../../Api/BookAPI';
 import {
   SERACH_BOOK_DATA_REQUEST,
   SERACH_BOOK_DATA_RESET,
@@ -48,7 +46,6 @@ const BookAddPage = ({navigation}) => {
   }, []); */
 
   const tagInputEnterEventHandler = (e) => {
-    console.log('event.nativeEvent ? ', e.nativeEvent);
     const {text} = e.nativeEvent;
     dispatch({type: SERACH_BOOK_DATA_REQUEST, data: text});
   };

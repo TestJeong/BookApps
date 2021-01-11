@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect} from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 import {
   TextInput,
   View,
@@ -7,16 +7,43 @@ import {
   Button,
   Image,
   FlatList,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
+import Modal from 'react-native-modal';
 
 import realm from '../../db';
 import {MY_BOOKLIST_DATA} from '../../reducers/BookList';
 import HelloTest from './HelloTest';
+import {User} from 'realm';
+
+const Modal_Container = styled(Modal)`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalView = styled.View`
+  flex-direction: column;
+  align-items: center;
+  /* 모달창 크기 조절 */
+  width: 320px;
+  height: 220px;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 10px;
+`;
+
+const Text_Input_Container = styled.TextInput`
+  padding: 5px;
+  height: 150px;
+  width: 90%;
+  border: 1px;
+`;
 
 const HeaderView = styled.View`
   flex-direction: row;
@@ -33,24 +60,26 @@ const Container = styled.View`
 
 const SearchInput = styled.TextInput`
   padding: 5px;
-  justify-content: flex-start;
 `;
 
 const Title_Input_View = styled.View`
   padding: 5px 35px;
+  text-align: center;
   margin-top: 20px;
 `;
 
 const Title_Input = styled.TextInput`
   font-size: 30px;
   font-weight: bold;
+
   border-bottom-width: 2px;
   border-bottom-color: gray;
 `;
 
 const Content_Input_View = styled.View`
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 5px 35px;
+
   height: 85%;
 `;
 
@@ -69,25 +98,78 @@ const BookContents = ({route, navigation}) => {
 
   const [ValueTitle, setValueTitle] = useState(title);
   const [ValueContent, setValueContent] = useState(content);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [bookMarkeContent, setBookMarkeContent] = useState('');
+
+  const promptDelete = () => {
+    Alert.alert(
+      'Delete Character',
+      'Deleting is irreversible, are you sure?',
+      [{text: 'Cancel'}, {text: 'OK', onPress: book_Delete}],
+      {cancelable: false},
+    );
+  };
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const momo = () => {
+    realm.write(() => {
+      let city = realm.create(
+        'SentenceStore',
+        {Sentence: bookMarkeContent, bookName: ValueTitle},
+        true,
+      );
+      let user = realm.create(
+        'User',
+        {
+          createtime: day,
+        },
+        true,
+      );
+      user.bookSentence.push(city);
+    });
+
+    setModalVisible(false);
+    setBookMarkeContent('');
+  };
 
   const book_Delete = async () => {
     try {
       const BookAllData = await realm.objects('User');
       const BookFilter = await BookAllData.filtered('bookName == $0', title);
 
-      await realm.write(() => {
+      const BookMarkData = await realm.objects('SentenceStore');
+      const BookMarkFilter = await BookMarkData.filtered(
+        'bookName == $0',
+        title,
+      );
+
+      realm.write(() => {
         realm.delete(BookFilter);
+        realm.delete(BookMarkFilter);
       });
+      dispatch({type: MY_BOOKLIST_DATA, data: BookAllData});
 
-      await dispatch({type: MY_BOOKLIST_DATA, data: BookAllData});
-
-      return navigation.navigate('Detail');
+      navigation.navigate('Detail');
     } catch (e) {
-      console.log('DetailListView에서 에러가 발생했습니다.', e);
+      console.log('BookContents에서 에러가 발생했습니다.', e);
     }
-  };
 
-  const IconTest = () => {};
+    /* const BookAllData = realm.objects('User');
+    const BookFilter = BookAllData.filtered('bookName == $0', title);
+
+    realm.write(() => {
+      try {
+        realm.delete(BookFilter);
+        navigation.navigate('Detail');
+        dispatch({type: MY_BOOKLIST_DATA, data: BookAllData});
+      } catch (e) {
+        console.log('eeeeee', e);
+      }
+    }); */
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -102,11 +184,11 @@ const BookContents = ({route, navigation}) => {
         <HeaderView>
           <Icon
             style={{marginRight: 30}}
-            onPress={IconTest}
+            onPress={toggleModal}
             name="bookmark"
             size={20}
           />
-          <Icon onPress={book_Delete} name="trash" size={20} />
+          <Icon onPress={promptDelete} name="trash" size={20} />
         </HeaderView>
       ),
     });
@@ -121,9 +203,24 @@ const BookContents = ({route, navigation}) => {
       });
     }
   });
-  const AllData = realm.objects('User');
+
   return (
     <Container>
+      <Modal_Container isVisible={isModalVisible}>
+        <ModalView>
+          <Text>글귀</Text>
+          <Text_Input_Container
+            multiline={true}
+            value={bookMarkeContent}
+            onChangeText={setBookMarkeContent}
+          />
+
+          <TouchableOpacity onPress={momo}>
+            <Text>닫기</Text>
+          </TouchableOpacity>
+        </ModalView>
+      </Modal_Container>
+
       <BookContent_View>
         <Title_Input_View>
           <Title_Input value={ValueTitle} onChangeText={setValueTitle} />
@@ -132,6 +229,7 @@ const BookContents = ({route, navigation}) => {
         <Content_Input_View>
           <InputViewBox scrollEnabled={false}>
             <SearchInput
+              textAlignVertical={'top'}
               multiline={true}
               numberOfLines={10}
               value={ValueContent}
@@ -143,7 +241,6 @@ const BookContents = ({route, navigation}) => {
 
       <BookMark_FlatList>
         <FlatList
-          scrollEnabled={false}
           keyExtractor={(item, index) => '#' + index}
           data={sentes}
           renderItem={(item) => <HelloTest hello={item} />}

@@ -11,19 +11,21 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
+import Realm from 'realm';
+
 import DetailListView from './Book/DetailListView';
 import realm from '../db';
+import {useRoute} from '@react-navigation/native';
 
 const Container = styled.View`
   flex: 1;
   padding: 10px;
 `;
 
-const DetailContainer = ({route}) => {
-  const dispatch = useDispatch();
+const DetailContainer = ({route, navigation}) => {
   const {user_book_data} = useSelector((state) => state.BookList);
 
-  useEffect(() => {
+  const change_bookData = () => {
     if (route.params.bookReTitle || route.params.post) {
       realm.write(() => {
         realm.create(
@@ -37,7 +39,11 @@ const DetailContainer = ({route}) => {
         );
       });
     }
-  }, [route.params.post, route.params.bookReTitle]);
+  };
+
+  useEffect(() => {
+    route.params ? change_bookData() : null;
+  }, [route]);
 
   /* const BookDate = realm.objects('User');
   const SortBookDate = BookDate.sorted('createtime'); */

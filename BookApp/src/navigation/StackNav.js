@@ -37,7 +37,6 @@ const BookStackNavigator = ({navigation}) => {
       <Stack.Screen
         name="Detail"
         component={DetailContainer}
-        initialParams={initData}
         options={{
           headerRightContainerStyle: {marginRight: 20},
           headerLeftContainerStyle: {marginLeft: 20},

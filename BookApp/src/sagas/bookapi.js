@@ -8,10 +8,7 @@ import KaKao_Book_API from '../Api/BookAPI';
 
 function* getWeatherDataSaga(action) {
   try {
-    console.log('saga 실행', action.data);
     const response = yield call(KaKao_Book_API, action.data);
-
-    console.log('book_saga', response);
 
     yield put({
       type: SERACH_BOOK_DATA_SUCCESS,

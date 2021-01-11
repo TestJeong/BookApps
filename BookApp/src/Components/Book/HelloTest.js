@@ -31,33 +31,67 @@ const ModalView = styled.View`
 `;
 
 const Text_Input_Container = styled.TextInput`
+  padding: 5px;
   height: 150px;
   width: 90%;
   border: 1px;
 `;
 
+const Button_View = styled.View`
+  flex: 1;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+`;
+
 const HelloTest = ({hello}) => {
   const [isModalVisible, setModalVisible] = useState(false);
+  const [bookMarkeContent, setBookMarkeContent] = useState(hello.item.Sentence);
+
+  const momo = () => {
+    if (hello.item.Sentence != bookMarkeContent) {
+      const BookMarkData = realm.objects('SentenceStore');
+      const BookMarkFilter = BookMarkData.filtered(
+        'Sentence == $0',
+        hello.item.Sentence,
+      );
+      realm.write(() => {
+        BookMarkFilter[0].Sentence = bookMarkeContent;
+      });
+    }
+
+    setModalVisible(false);
+  };
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
-  console.log('책갈피', hello.item.Sentence);
-
   return (
-    <ImageContentView onPress={toggleModal}>
-      <Icon name="bookmark" size={30} />
-
-      <Modal_Container isVisible={isModalVisible}>
-        <ModalView>
-          <Text>{hello.item.Sentence}</Text>
-          <Text_Input_Container />
-
-          <Button title="Hide modal" onPress={toggleModal} />
-        </ModalView>
-      </Modal_Container>
-    </ImageContentView>
+    <>
+      <Icon name="bookmark" size={30} onPress={toggleModal} />
+      <ImageContentView>
+        <Modal_Container isVisible={isModalVisible}>
+          <ModalView>
+            <Text>글귀</Text>
+            <Text_Input_Container
+              multiline={true}
+              value={bookMarkeContent}
+              onChangeText={setBookMarkeContent}
+            />
+            <Button_View>
+              <TouchableOpacity onPress={momo}>
+                <Text>삭제</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={momo}>
+                <Text>저장</Text>
+              </TouchableOpacity>
+            </Button_View>
+          </ModalView>
+        </Modal_Container>
+      </ImageContentView>
+    </>
   );
 };
 

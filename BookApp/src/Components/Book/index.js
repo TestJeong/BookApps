@@ -27,6 +27,7 @@ const TextColume = styled.Text`
 
 const BookContainer = ({navigation}) => {
   const {colors} = useTheme();
+
   useEffect(() => {
     Realm.open({}).then((realm) => {
       console.log('Realm is located at: ' + realm.path.toString());

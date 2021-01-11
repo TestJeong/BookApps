@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, Button} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 import realm from '../../db';
+import Realm, {User} from 'realm';
 import {
   MY_BOOKLIST_DATA,
   SERACH_BOOK_DATA_RESET,
@@ -35,8 +36,8 @@ const DetailListView = ({bookData, route}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const book_Selection_Data = () => {
-    /*  try {
+  const book_Selection_Data = async () => {
+    /* try {
       const BookAllData = await realm.objects('User');
       const BookFilter = await BookAllData.filtered(
         'bookName == $0',
