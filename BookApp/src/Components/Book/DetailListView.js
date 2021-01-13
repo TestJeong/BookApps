@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, TouchableOpacity, Button} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Button,
+  Dimensions,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
@@ -10,29 +17,19 @@ import {
   SERACH_BOOK_DATA_RESET,
 } from '../../reducers/BookList';
 
-const ContainerView = styled.TouchableOpacity`
-  flex-direction: row;
-  justify-content: center;
-  flex: 1;
-`;
+const ContainerView = styled.TouchableOpacity``;
 
 const ImageContentView = styled.View`
   margin: 10px 0px;
-  flex: 1;
 `;
 
 const ImageView = styled.Image`
   height: 165px;
   width: 120px;
-
   margin-right: 10px;
 `;
 
-const TextContentView = styled.View`
-  margin: 10px 0px;
-`;
-
-const DetailListView = ({bookData, route}) => {
+const DetailListView = ({bookData}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -58,6 +55,7 @@ const DetailListView = ({bookData, route}) => {
       sentes: bookData.item.bookSentence,
     });
   };
+
   return (
     <ContainerView onPress={book_Selection_Data}>
       <ImageContentView>

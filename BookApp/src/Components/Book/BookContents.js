@@ -146,11 +146,13 @@ const BookContents = ({route, navigation}) => {
         title,
       );
 
+      const SortBookDate = await BookAllData.sorted('createtime');
+
       realm.write(() => {
         realm.delete(BookFilter);
         realm.delete(BookMarkFilter);
       });
-      dispatch({type: MY_BOOKLIST_DATA, data: BookAllData});
+      dispatch({type: MY_BOOKLIST_DATA, data: SortBookDate});
 
       navigation.navigate('Detail');
     } catch (e) {

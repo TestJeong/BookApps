@@ -9,7 +9,7 @@ import {TEST_REDUXSS} from '../../reducers/BookList';
 import KaKao_Book_API from '../../Api/BookAPI';
 
 const ViewContainer = styled.View`
-  margin-right: 80px;
+  margin-right: 60px;
   margin-bottom: 20%;
 `;
 
@@ -40,10 +40,10 @@ const BookContainer = ({navigation}) => {
         <TextColume
           style={{color: colors.text}}
           onPress={() => navigation.navigate('Detail')}>
-          / LIST
+          /LIST
         </TextColume>
-        <TextColume style={{color: colors.text}}>/ CHECK</TextColume>
-        <TextColume style={{color: colors.text}}>/ MEMO</TextColume>
+        <TextColume style={{color: colors.text}}>/CHECK</TextColume>
+        <TextColume style={{color: colors.text}}>/MEMO</TextColume>
       </ViewContainer>
     </Container>
   );
