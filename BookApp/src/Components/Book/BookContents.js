@@ -21,6 +21,7 @@ import realm from '../../db';
 import {MY_BOOKLIST_DATA} from '../../reducers/BookList';
 import HelloTest from './HelloTest';
 import {User} from 'realm';
+import {useTheme} from '@react-navigation/native';
 
 const Modal_Container = styled(Modal)`
   flex: 1;
@@ -93,6 +94,7 @@ const BookContent_View = styled.View`
 
 const BookContents = ({route, navigation}) => {
   const dispatch = useDispatch();
+  const {colors} = useTheme();
 
   const {title, content, day, sentes} = route.params;
 
@@ -154,7 +156,7 @@ const BookContents = ({route, navigation}) => {
       });
       dispatch({type: MY_BOOKLIST_DATA, data: SortBookDate});
 
-      navigation.navigate('Detail');
+      navigation.navigate('My List');
     } catch (e) {
       console.log('BookContents에서 에러가 발생했습니다.', e);
     }
@@ -177,7 +179,8 @@ const BookContents = ({route, navigation}) => {
     navigation.setOptions({
       headerLeft: () => (
         <Icon
-          onPress={() => navigation.navigate('Detail')}
+          color={colors.text}
+          onPress={() => navigation.navigate('My List')}
           name="arrow-left"
           size={20}
         />
@@ -185,12 +188,18 @@ const BookContents = ({route, navigation}) => {
       headerRight: () => (
         <HeaderView>
           <Icon
+            color={colors.text}
             style={{marginRight: 30}}
             onPress={toggleModal}
             name="bookmark"
             size={20}
           />
-          <Icon onPress={promptDelete} name="trash" size={20} />
+          <Icon
+            onPress={promptDelete}
+            name="trash"
+            color={colors.text}
+            size={20}
+          />
         </HeaderView>
       ),
     });
@@ -198,7 +207,7 @@ const BookContents = ({route, navigation}) => {
 
   navigation.addListener('blur', () => {
     if (title != ValueTitle || content != ValueContent) {
-      navigation.navigate('Detail', {
+      navigation.navigate('My List', {
         bookReTitle: ValueTitle,
         post: ValueContent,
         time: day,
@@ -225,12 +234,18 @@ const BookContents = ({route, navigation}) => {
 
       <BookContent_View>
         <Title_Input_View>
-          <Title_Input value={ValueTitle} onChangeText={setValueTitle} />
+          <Title_Input
+            selection={{start: 0, end: 0}}
+            value={ValueTitle}
+            style={{color: colors.text}}
+            onChangeText={setValueTitle}
+          />
         </Title_Input_View>
 
         <Content_Input_View>
           <InputViewBox scrollEnabled={false}>
             <SearchInput
+              style={{color: colors.text}}
               textAlignVertical={'top'}
               multiline={true}
               numberOfLines={10}

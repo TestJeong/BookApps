@@ -54,8 +54,9 @@ const BookAddPage = ({navigation}) => {
     <Container>
       <InputViewBox>
         <SearchInput
+          style={{color: 'gray'}}
           placeholder="검색어를 입력해주세요"
-          underlineColor="green"
+          underlineColor="gray"
           selectionColor="blue"
           value={inputValue}
           onChangeText={(text) => setInputValue(text)}

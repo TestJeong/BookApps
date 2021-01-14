@@ -32,7 +32,7 @@ const CustomDrawerContent = (props) => {
         <Drawer.Section>
           <TouchableRipple onPress={props.toggleTheme}>
             <View style={styles.preference}>
-              <Text>Dark Theme</Text>
+              <Text style={{fontFamily: 'JosefinSans-Italic'}}>Dark Theme</Text>
               <View pointerEvents="none">
                 <Switch color={'red'} value={paperTheme.dark} />
               </View>
@@ -48,7 +48,7 @@ const CustomDrawerContent = (props) => {
               labelStyle={{
                 fontSize: 30,
                 textAlign: 'right',
-                fontWeight: 'bold',
+                fontFamily: 'JosefinSans-Italic',
               }}
               onPress={() => props.navigation.navigate('Book')}
             />
@@ -57,7 +57,7 @@ const CustomDrawerContent = (props) => {
               onPress={() => props.navigation.navigate('Movie')}
               labelStyle={{
                 fontSize: 30,
-                fontWeight: 'bold',
+                fontFamily: 'JosefinSans-Italic',
                 textAlign: 'right',
               }}
             />

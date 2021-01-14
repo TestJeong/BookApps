@@ -23,13 +23,14 @@ const Container = styled.View`
   flex: 1;
   flex-direction: column;
   align-items: center;
+
   padding: 10px 0px 10px 10px;
 `;
 
 const DetailContainer = ({route, navigation}) => {
   const {user_book_data} = useSelector((state) => state.BookList);
   const ITEM_WIDTH = Math.floor(Dimensions.get('window').width);
-  const numColumn = Math.floor(ITEM_WIDTH / 120);
+  const numColumn = Math.floor((ITEM_WIDTH - 20) / 105);
 
   /* const formatRow = (data, numColumns) => {
     const numberOfFullRows = Math.floor(data.length / numColumns);
@@ -80,6 +81,7 @@ const DetailContainer = ({route, navigation}) => {
 
   return (
     <Container>
+      <Text>{ITEM_WIDTH}</Text>
       <FlatList
         keyExtractor={(item, index) => '#' + index}
         numColumns={numColumn}

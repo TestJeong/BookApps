@@ -16,6 +16,7 @@ const Stack = createStackNavigator();
 
 const screenOptionStyle = {
   headerTitleAlign: 'center',
+  headerTitleStyle: {fontFamily: 'JosefinSans-Italic'},
 };
 
 const BookStackNavigator = ({navigation}) => {
@@ -24,7 +25,11 @@ const BookStackNavigator = ({navigation}) => {
 
   return (
     <Stack.Navigator screenOptions={screenOptionStyle} initialRouteName="Book">
-      <Stack.Screen name="Books" component={BookContainer} />
+      <Stack.Screen
+        name="Books"
+        component={BookContainer}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="BookContents"
         component={BookContents}
@@ -35,7 +40,7 @@ const BookStackNavigator = ({navigation}) => {
       />
 
       <Stack.Screen
-        name="Detail"
+        name="My List"
         component={DetailContainer}
         options={{
           headerRightContainerStyle: {marginRight: 20},
@@ -68,7 +73,7 @@ const BookStackNavigator = ({navigation}) => {
 
           headerLeft: () => (
             <Icon
-              onPress={() => navigation.navigate('Detail')}
+              onPress={() => navigation.navigate('My List')}
               name="arrow-left"
               size={20}
               color={colors.text}

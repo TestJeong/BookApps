@@ -20,7 +20,7 @@ const CombinedDefaultTheme = {
   ...NavigationDefaultTheme,
   colors: {
     ...NavigationDefaultTheme.colors,
-    text: 'green',
+    text: 'black',
   },
 };
 const CombinedDarkTheme = {

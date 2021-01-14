@@ -21,6 +21,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		88D450032910CA39C0A8762C /* libPods-BookApp-BookAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C467D5F998444D7AA9E0F1A7 /* libPods-BookApp-BookAppTests.a */; };
 		AD98DF6C259EC0B700B67857 /* www in Resources */ = {isa = PBXBuildFile; fileRef = AD98DF6B259EC0B700B67857 /* www */; };
+		ADAFA8C325B0749000575344 /* JosefinSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADAFA8C225B0749000575344 /* JosefinSans-Italic.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		7AA55C25F7EBF9B351AC37F5 /* Pods-BookApp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BookApp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-BookApp-tvOS/Pods-BookApp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = BookApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AD98DF6B259EC0B700B67857 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = BookApp/www; sourceTree = "<group>"; };
+		ADAFA8C225B0749000575344 /* JosefinSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-Italic.ttf"; sourceTree = "<group>"; };
 		ADE82293259A0B8A00535FE5 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		ADE82294259A0B9800535FE5 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		ADE82295259A0B9800535FE5 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 			children = (
 				ADE8229F259A0B9800535FE5 /* AntDesign.ttf */,
 				ADE8229C259A0B9800535FE5 /* Entypo.ttf */,
+				ADAFA8C225B0749000575344 /* JosefinSans-Italic.ttf */,
 				ADE8229B259A0B9800535FE5 /* EvilIcons.ttf */,
 				ADE82295259A0B9800535FE5 /* Feather.ttf */,
 				ADE822A1259A0B9800535FE5 /* FontAwesome5_Brands.ttf */,
@@ -383,6 +386,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ADAFA8C325B0749000575344 /* JosefinSans-Italic.ttf in Resources */,
 				AD98DF6C259EC0B700B67857 /* www in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,

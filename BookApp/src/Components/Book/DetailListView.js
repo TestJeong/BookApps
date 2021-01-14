@@ -24,9 +24,10 @@ const ImageContentView = styled.View`
 `;
 
 const ImageView = styled.Image`
-  height: 165px;
-  width: 120px;
+  height: 145px;
+  width: 105px;
   margin-right: 10px;
+  border-radius: 5px;
 `;
 
 const DetailListView = ({bookData}) => {

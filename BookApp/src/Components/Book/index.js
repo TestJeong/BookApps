@@ -1,28 +1,34 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View, ScrollView, Button} from 'react-native';
-import {useDispatch} from 'react-redux';
+import React, {useEffect} from 'react';
+import {Text, View, ScrollView, Image, StyleSheet} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import styled from 'styled-components/native';
-import Realm, {User} from 'realm';
-import realm from '../../db';
-import {TEST_REDUXSS} from '../../reducers/BookList';
-import KaKao_Book_API from '../../Api/BookAPI';
+import Realm from 'realm';
+import paris55 from '../../../img/paris55.jpg';
 
-const ViewContainer = styled.View`
-  margin-right: 60px;
-  margin-bottom: 20%;
-`;
+const ViewContainer = styled.View``;
 
 const Container = styled.View`
   flex: 1;
-  justify-content: flex-end;
-  align-items: flex-end;
+  padding: 30px;
+  justify-content: space-around;
 `;
 
 const TextColume = styled.Text`
-  font-size: 30px;
-  font-weight: 700;
+  font-size: 45px;
   margin-bottom: 50px;
+  border-bottom-width: 1px;
+  border-bottom-color: gray;
+  font-family: 'JosefinSans-Italic';
+  text-align: left;
+`;
+
+const ImageView = styled.View`
+  align-items: center;
+`;
+
+const ImageContent = styled.Image`
+  width: 100%;
+  height: 250px;
 `;
 
 const BookContainer = ({navigation}) => {
@@ -36,14 +42,16 @@ const BookContainer = ({navigation}) => {
 
   return (
     <Container>
+      <ImageView>
+        <ImageContent source={paris55} resizeMode={'contain'} />
+      </ImageView>
       <ViewContainer>
         <TextColume
           style={{color: colors.text}}
-          onPress={() => navigation.navigate('Detail')}>
-          /LIST
+          onPress={() => navigation.navigate('My List')}>
+          LIST &nbsp;。
         </TextColume>
-        <TextColume style={{color: colors.text}}>/CHECK</TextColume>
-        <TextColume style={{color: colors.text}}>/MEMO</TextColume>
+        <TextColume style={{color: colors.text}}>BASKET &nbsp;。 </TextColume>
       </ViewContainer>
     </Container>
   );

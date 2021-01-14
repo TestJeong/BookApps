@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
@@ -30,6 +30,7 @@ const TextContentView = styled.View`
 const SearchListView = ({bookData}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {colors} = useTheme();
 
   var date = new Date().getDate(); //Current Date
   var month = new Date().getMonth() + 1; //Current Month
@@ -59,7 +60,7 @@ const SearchListView = ({bookData}) => {
     const BookDate = await realm.objects('User');
     const SortBookDate = await BookDate.sorted('createtime');
     dispatch({type: MY_BOOKLIST_DATA, data: SortBookDate});
-    navigation.navigate('Detail');
+    navigation.navigate('My List');
   };
   return (
     <ContainerView onPress={test_touch}>
@@ -71,10 +72,12 @@ const SearchListView = ({bookData}) => {
         />
       </ImageContentView>
       <TextContentView>
-        <Text>{bookData.item.title}</Text>
-        <Text>{bookData.item.authors} 저</Text>
-        <Text>{bookData.item.publisher}</Text>
-        <Text>{bookData.item.datetime.slice(0, 10)} 출간</Text>
+        <Text style={{color: colors.text}}>{bookData.item.title}</Text>
+        <Text style={{color: colors.text}}>{bookData.item.authors} 저</Text>
+        <Text style={{color: colors.text}}>{bookData.item.publisher}</Text>
+        <Text style={{color: colors.text}}>
+          {bookData.item.datetime.slice(0, 10)} 출간
+        </Text>
       </TextContentView>
     </ContainerView>
   );
