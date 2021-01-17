@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {DrawerItem, DrawerContentScrollView} from '@react-navigation/drawer';
 import styled from 'styled-components/native';
+import realm from '../db';
 import {
   useTheme,
   Avatar,
@@ -12,6 +13,8 @@ import {
   TouchableRipple,
   Switch,
 } from 'react-native-paper';
+import {useSelector, useDispatch} from 'react-redux';
+import {MY_THEMEA} from '../reducers/BookList';
 
 const ViewCon = styled.View`
   margin-bottom: 40%;

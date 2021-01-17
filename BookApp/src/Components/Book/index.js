@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Text, View, ScrollView, Image, StyleSheet} from 'react-native';
+import {Text, View, ScrollView, Image, SafeAreaView} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import styled from 'styled-components/native';
 import Realm from 'realm';
@@ -8,6 +8,8 @@ import paris55 from '../../../img/paris55.jpg';
 const ViewContainer = styled.View``;
 
 const Container = styled.View`
+  border: 18px;
+  border-color: #725a7a;
   flex: 1;
   padding: 30px;
   justify-content: space-around;
@@ -41,19 +43,22 @@ const BookContainer = ({navigation}) => {
   }, []);
 
   return (
-    <Container>
-      <ImageView>
-        <ImageContent source={paris55} resizeMode={'contain'} />
-      </ImageView>
-      <ViewContainer>
-        <TextColume
-          style={{color: colors.text}}
-          onPress={() => navigation.navigate('My List')}>
-          LIST &nbsp;。
-        </TextColume>
-        <TextColume style={{color: colors.text}}>BASKET &nbsp;。 </TextColume>
-      </ViewContainer>
-    </Container>
+    <>
+      <SafeAreaView />
+      <Container>
+        <ImageView>
+          <ImageContent source={paris55} resizeMode={'contain'} />
+        </ImageView>
+        <ViewContainer>
+          <TextColume
+            style={{color: colors.text}}
+            onPress={() => navigation.navigate('My List')}>
+            LIST &nbsp;。
+          </TextColume>
+          <TextColume style={{color: colors.text}}>BASKET &nbsp;。 </TextColume>
+        </ViewContainer>
+      </Container>
+    </>
   );
 };
 

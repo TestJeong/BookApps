@@ -18,9 +18,13 @@ import styled from 'styled-components/native';
 import Modal from 'react-native-modal';
 
 import realm from '../../db';
-import {MY_BOOKLIST_DATA} from '../../reducers/BookList';
+import {
+  MY_BOOKLIST_DATA,
+  TEST_DATA_TEST,
+  TEST_DATA_TEST_RESET,
+} from '../../reducers/BookList';
 import HelloTest from './HelloTest';
-import {User} from 'realm';
+
 import {useTheme} from '@react-navigation/native';
 
 const Modal_Container = styled(Modal)`
@@ -55,7 +59,6 @@ const InputViewBox = styled(KeyboardAwareScrollView)``;
 const Container = styled.View`
   flex: 1;
   flex-direction: row;
-
   padding: 10px;
 `;
 
@@ -72,7 +75,6 @@ const Title_Input_View = styled.View`
 const Title_Input = styled.TextInput`
   font-size: 30px;
   font-weight: bold;
-
   border-bottom-width: 2px;
   border-bottom-color: gray;
 `;
@@ -80,7 +82,6 @@ const Title_Input = styled.TextInput`
 const Content_Input_View = styled.View`
   margin-top: 10px;
   padding: 5px 35px;
-
   height: 85%;
 `;
 
@@ -93,15 +94,28 @@ const BookContent_View = styled.View`
 `;
 
 const BookContents = ({route, navigation}) => {
+  const {test_data} = useSelector((state) => state.BookList);
+
   const dispatch = useDispatch();
   const {colors} = useTheme();
 
-  const {title, content, day, sentes} = route.params;
+  const [ValueTitle, setValueTitle] = useState(
+    test_data.length === 0 ? null : test_data.item.bookName,
+  );
+  const [ValueContent, setValueContent] = useState(
+    test_data.length === 0 ? null : test_data.item.bookRecord,
+  );
+  const [ValueTime, setValueTime] = useState(
+    test_data.length === 0 ? null : test_data.item.createtime,
+  );
 
-  const [ValueTitle, setValueTitle] = useState(title);
-  const [ValueContent, setValueContent] = useState(content);
+  const time = test_data.length === 0 ? '' : test_data.item.createtime;
+
   const [isModalVisible, setModalVisible] = useState(false);
   const [bookMarkeContent, setBookMarkeContent] = useState('');
+  const [date, setDate] = useState(new Date());
+
+  const {day} = route.params;
 
   const promptDelete = () => {
     Alert.alert(
@@ -126,13 +140,13 @@ const BookContents = ({route, navigation}) => {
       let user = realm.create(
         'User',
         {
-          createtime: day,
+          createtime: test_data.item.createtime,
         },
         true,
       );
       user.bookSentence.push(city);
     });
-
+    dispatch({type: TEST_DATA_TEST, data: test_data});
     setModalVisible(false);
     setBookMarkeContent('');
   };
@@ -140,39 +154,38 @@ const BookContents = ({route, navigation}) => {
   const book_Delete = async () => {
     try {
       const BookAllData = await realm.objects('User');
-      const BookFilter = await BookAllData.filtered('bookName == $0', title);
-
-      const BookMarkData = await realm.objects('SentenceStore');
-      const BookMarkFilter = await BookMarkData.filtered(
-        'bookName == $0',
-        title,
+      const BookFilter = await BookAllData.filtered(
+        'bookName != $0',
+        test_data.item.bookName,
       );
 
-      const SortBookDate = await BookAllData.sorted('createtime');
+      const SortBookDate = await BookFilter.sorted('createtime');
 
-      realm.write(() => {
-        realm.delete(BookFilter);
-        realm.delete(BookMarkFilter);
-      });
       dispatch({type: MY_BOOKLIST_DATA, data: SortBookDate});
+
+      const BookAll = await realm.objects('User');
+      const BookFil = await BookAll.filtered(
+        'bookName == $0',
+        test_data.item.bookName,
+      );
+
+      const BookMark = await realm.objects('SentenceStore');
+      const BookMarkFil = await BookMark.filtered(
+        'bookName == $0',
+        test_data.item.bookName,
+      );
+
+      dispatch({type: TEST_DATA_TEST_RESET});
+
+      await realm.write(() => {
+        realm.delete(BookFil);
+        realm.delete(BookMarkFil);
+      });
 
       navigation.navigate('My List');
     } catch (e) {
-      console.log('BookContents에서 에러가 발생했습니다.', e);
+      console.log('BookContens에러입니다', e);
     }
-
-    /* const BookAllData = realm.objects('User');
-    const BookFilter = BookAllData.filtered('bookName == $0', title);
-
-    realm.write(() => {
-      try {
-        realm.delete(BookFilter);
-        navigation.navigate('Detail');
-        dispatch({type: MY_BOOKLIST_DATA, data: BookAllData});
-      } catch (e) {
-        console.log('eeeeee', e);
-      }
-    }); */
   };
 
   useLayoutEffect(() => {
@@ -195,7 +208,7 @@ const BookContents = ({route, navigation}) => {
             size={20}
           />
           <Icon
-            onPress={promptDelete}
+            onPress={book_Delete}
             name="trash"
             color={colors.text}
             size={20}
@@ -206,11 +219,14 @@ const BookContents = ({route, navigation}) => {
   }, []);
 
   navigation.addListener('blur', () => {
-    if (title != ValueTitle || content != ValueContent) {
+    //delted
+    if (test_data.length === 0) {
+      null;
+    } else {
       navigation.navigate('My List', {
         bookReTitle: ValueTitle,
         post: ValueContent,
-        time: day,
+        make_createtime: day,
       });
     }
   });
@@ -237,8 +253,8 @@ const BookContents = ({route, navigation}) => {
           <Title_Input
             selection={{start: 0, end: 0}}
             value={ValueTitle}
-            style={{color: colors.text}}
             onChangeText={setValueTitle}
+            style={{color: colors.text}}
           />
         </Title_Input_View>
 
@@ -259,7 +275,7 @@ const BookContents = ({route, navigation}) => {
       <BookMark_FlatList>
         <FlatList
           keyExtractor={(item, index) => '#' + index}
-          data={sentes}
+          data={test_data.length === 0 ? null : test_data.item.bookSentence}
           renderItem={(item) => <HelloTest hello={item} />}
         />
       </BookMark_FlatList>

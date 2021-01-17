@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
 import {TextInput} from 'react-native-paper';
+
 import {
   SERACH_BOOK_DATA_REQUEST,
   SERACH_BOOK_DATA_RESET,
@@ -27,9 +28,8 @@ const KeyboradBox = styled(KeyboardAwareFlatList)`
 
 const BookAddPage = ({navigation}) => {
   const dispatch = useDispatch();
-  const {serach_book_data, search_book_data_reset} = useSelector(
-    (state) => state.BookList,
-  );
+
+  const {serach_book_data} = useSelector((state) => state.BookList);
 
   const [inputValue, setInputValue] = useState('');
 
@@ -38,12 +38,6 @@ const BookAddPage = ({navigation}) => {
       dispatch({type: SERACH_BOOK_DATA_RESET}),
     );
   }, []);
-
-  /*   useEffect(() => {
-    if (search_book_data_reset) {
-      dispatch({type: SERACH_BOOK_DATA_RESET});
-    }
-  }, []); */
 
   const tagInputEnterEventHandler = (e) => {
     const {text} = e.nativeEvent;
@@ -67,7 +61,7 @@ const BookAddPage = ({navigation}) => {
         data={serach_book_data}
         initialNumToRender={10}
         windowSize={3}
-        renderItem={(item) => <SearchListView bookData={item} />}
+        renderItem={(item, index) => <SearchListView bookData={item} />}
         keyExtractor={(item, index) => index.toString()}
       />
     </Container>

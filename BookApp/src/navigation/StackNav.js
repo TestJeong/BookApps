@@ -21,7 +21,6 @@ const screenOptionStyle = {
 
 const BookStackNavigator = ({navigation}) => {
   const {colors} = useTheme();
-  const initData = realm.objects('User'); //Detail-Page에 초기 값이 필요
 
   return (
     <Stack.Navigator screenOptions={screenOptionStyle} initialRouteName="Book">

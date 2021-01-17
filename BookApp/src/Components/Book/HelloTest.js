@@ -7,6 +7,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Modal from 'react-native-modal';
 
 import realm from '../../db';
+import {useTheme} from '@react-navigation/native';
+import {MY_BOOKLIST_DATA} from '../../reducers/BookList';
 
 const ImageContentView = styled.TouchableOpacity`
   flex: 1;
@@ -48,6 +50,47 @@ const Button_View = styled.View`
 const HelloTest = ({hello}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [bookMarkeContent, setBookMarkeContent] = useState(hello.item.Sentence);
+  const dispatch = useDispatch();
+
+  const {colors} = useTheme();
+
+  const SentensDelete = async () => {
+    try {
+      const BookAllData = await realm.objects('User');
+
+      const BookMarkData = await realm.objects('SentenceStore');
+      const BookMarkFilter = await BookMarkData.filtered(
+        'Sentence == $0',
+        hello.item.Sentence,
+      );
+
+      const SortBookDate = await BookAllData.sorted('createtime');
+
+      realm.write(() => {
+        realm.delete(BookMarkFilter);
+      });
+      setModalVisible(false);
+    } catch (e) {
+      console.log('HelloTest에서 에러가 발생했습니다.', e);
+    }
+
+    /* const BookAllData = await realm.objects('User');
+
+    const BookMarkData = await realm.objects('SentenceStore');
+    const BookMarkFilter = await BookMarkData.filtered(
+      'Sentence == $0',
+      hello.item.Sentence,
+    );
+
+    const SortBookDate = await BookAllData.sorted('createtime');
+
+    realm.write(() => {
+      realm.delete(BookMarkFilter);
+    });
+
+    setModalVisible(false);
+    console.log('asdfasd', BookMarkFilter[0].Sentence); */
+  };
 
   const momo = () => {
     if (hello.item.Sentence != bookMarkeContent) {
@@ -70,7 +113,12 @@ const HelloTest = ({hello}) => {
 
   return (
     <>
-      <Icon name="bookmark" size={30} onPress={toggleModal} />
+      <Icon
+        name="bookmark"
+        size={30}
+        onPress={toggleModal}
+        color={colors.text}
+      />
       <ImageContentView>
         <Modal_Container isVisible={isModalVisible}>
           <ModalView>

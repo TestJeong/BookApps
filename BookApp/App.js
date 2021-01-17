@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import Realm from 'realm';
+import realm from './src/db';
 
 import {
   NavigationContainer,
@@ -10,6 +12,7 @@ import {
   Provider as PaperProvider,
   DefaultTheme as PaperDefaultTheme,
 } from 'react-native-paper';
+
 import DrawerNavigator from './src/navigation/DrawerNav';
 import {StatusBar} from 'react-native';
 import {Provider} from 'react-redux';
@@ -33,15 +36,32 @@ const CombinedDarkTheme = {
 };
 
 const App = () => {
-  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+  const [isDarkTheme, setIsDarkTheme] = React.useState(
+    realm.objects('Theme').length === 0
+      ? false
+      : realm.objects('Theme')[0].isTheme,
+  );
 
   const theme = isDarkTheme ? CombinedDarkTheme : CombinedDefaultTheme; // Use Light/Dark theme based on a state
+
+  useEffect(() => {
+    realm.write(() => {
+      realm.create(
+        'Theme',
+        {
+          id: 1,
+          isTheme: isDarkTheme,
+        },
+        true,
+      );
+    });
+  }, [isDarkTheme]);
 
   function toggleTheme() {
     // We will pass this function to Drawer and invoke it on theme switch press
     setIsDarkTheme((isDark) => !isDark);
   }
-
+  /*   const basetheme = realm.objects('Theme')[0].isTheme; */
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>

@@ -55,11 +55,11 @@ const SearchListView = ({bookData}) => {
     });
   };
 
-  const test_touch = async () => {
-    await book_Selection_Data();
-    const BookDate = await realm.objects('User');
-    const SortBookDate = await BookDate.sorted('createtime');
+  const test_touch = () => {
+    const BookDate = realm.objects('User');
+    const SortBookDate = BookDate.sorted('createtime');
     dispatch({type: MY_BOOKLIST_DATA, data: SortBookDate});
+    book_Selection_Data();
     navigation.navigate('My List');
   };
   return (

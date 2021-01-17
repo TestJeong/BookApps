@@ -12,10 +12,7 @@ import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 import realm from '../../db';
 import Realm, {User} from 'realm';
-import {
-  MY_BOOKLIST_DATA,
-  SERACH_BOOK_DATA_RESET,
-} from '../../reducers/BookList';
+import {SELECT_BOOK_DATA, TEST_DATA_TEST} from '../../reducers/BookList';
 
 const ContainerView = styled.TouchableOpacity``;
 
@@ -34,7 +31,7 @@ const DetailListView = ({bookData}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const book_Selection_Data = async () => {
+  const book_Selection_Data = () => {
     /* try {
       const BookAllData = await realm.objects('User');
       const BookFilter = await BookAllData.filtered(
@@ -48,12 +45,10 @@ const DetailListView = ({bookData}) => {
     } catch (e) {
       console.log('DetailListView에서 에러가 발생했습니다.', e);
     } */
+    dispatch({type: TEST_DATA_TEST, data: bookData});
 
     navigation.navigate('BookContents', {
-      title: bookData.item.bookName,
-      content: bookData.item.bookRecord,
       day: bookData.item.createtime,
-      sentes: bookData.item.bookSentence,
     });
   };
 

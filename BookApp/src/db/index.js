@@ -34,9 +34,23 @@ BookSent.schema = {
   },
 };
 
+class UserTheme {}
+
+UserTheme.schema = {
+  name: 'Theme',
+  primaryKey: 'id',
+  properties: {
+    id: 'int',
+    isTheme: {
+      type: 'bool',
+      default: false,
+    },
+  },
+};
+
 let realm = new Realm({
-  schema: [User1, BookSent],
-  schemaVersion: 12,
+  schema: [User1, BookSent, UserTheme],
+  schemaVersion: 17,
   migration: (oldRealm, newRealm) => {
     // only apply this change if upgrading to schemaVersion 1
     if (oldRealm.schemaVersion < 1) {
