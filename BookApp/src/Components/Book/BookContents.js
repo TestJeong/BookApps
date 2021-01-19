@@ -10,12 +10,12 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 
+import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
-import Modal from 'react-native-modal';
+import {useTheme} from '@react-navigation/native';
 
 import realm from '../../db';
 import {
@@ -24,31 +24,7 @@ import {
   TEST_DATA_TEST_RESET,
 } from '../../reducers/BookList';
 import HelloTest from './HelloTest';
-
-import {useTheme} from '@react-navigation/native';
-
-const Modal_Container = styled(Modal)`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ModalView = styled.View`
-  flex-direction: column;
-  align-items: center;
-  /* 모달창 크기 조절 */
-  width: 320px;
-  height: 220px;
-  background-color: rgba(255, 255, 255, 1);
-  border-radius: 10px;
-`;
-
-const Text_Input_Container = styled.TextInput`
-  padding: 5px;
-  height: 150px;
-  width: 90%;
-  border: 1px;
-`;
+import BookMark_Modal from './BookMark_Modal';
 
 const HeaderView = styled.View`
   flex-direction: row;
@@ -59,15 +35,18 @@ const InputViewBox = styled(KeyboardAwareScrollView)``;
 const Container = styled.View`
   flex: 1;
   flex-direction: row;
+
   padding: 10px;
 `;
 
 const SearchInput = styled.TextInput`
   padding: 5px;
+  font-size: 17px;
+  line-height: 30px;
 `;
 
 const Title_Input_View = styled.View`
-  padding: 5px 35px;
+  padding: 5px 20px;
   text-align: center;
   margin-top: 20px;
 `;
@@ -81,12 +60,12 @@ const Title_Input = styled.TextInput`
 
 const Content_Input_View = styled.View`
   margin-top: 10px;
-  padding: 5px 35px;
+  padding: 5px 15px;
   height: 85%;
 `;
 
 const BookMark_FlatList = styled.View`
-  margin-top: 25px;
+  margin-top: 30px;
 `;
 
 const BookContent_View = styled.View`
@@ -105,15 +84,8 @@ const BookContents = ({route, navigation}) => {
   const [ValueContent, setValueContent] = useState(
     test_data.length === 0 ? null : test_data.item.bookRecord,
   );
-  const [ValueTime, setValueTime] = useState(
-    test_data.length === 0 ? null : test_data.item.createtime,
-  );
-
-  const time = test_data.length === 0 ? '' : test_data.item.createtime;
 
   const [isModalVisible, setModalVisible] = useState(false);
-  const [bookMarkeContent, setBookMarkeContent] = useState('');
-  const [date, setDate] = useState(new Date());
 
   const {day} = route.params;
 
@@ -126,29 +98,12 @@ const BookContents = ({route, navigation}) => {
     );
   };
 
-  const toggleModal = () => {
+  const opneModal = () => {
     setModalVisible(!isModalVisible);
   };
 
-  const momo = () => {
-    realm.write(() => {
-      let city = realm.create(
-        'SentenceStore',
-        {Sentence: bookMarkeContent, bookName: ValueTitle},
-        true,
-      );
-      let user = realm.create(
-        'User',
-        {
-          createtime: test_data.item.createtime,
-        },
-        true,
-      );
-      user.bookSentence.push(city);
-    });
-    dispatch({type: TEST_DATA_TEST, data: test_data});
+  const closeModal = () => {
     setModalVisible(false);
-    setBookMarkeContent('');
   };
 
   const book_Delete = async () => {
@@ -203,7 +158,7 @@ const BookContents = ({route, navigation}) => {
           <Icon
             color={colors.text}
             style={{marginRight: 30}}
-            onPress={toggleModal}
+            onPress={opneModal}
             name="bookmark"
             size={20}
           />
@@ -233,20 +188,12 @@ const BookContents = ({route, navigation}) => {
 
   return (
     <Container>
-      <Modal_Container isVisible={isModalVisible}>
-        <ModalView>
-          <Text>글귀</Text>
-          <Text_Input_Container
-            multiline={true}
-            value={bookMarkeContent}
-            onChangeText={setBookMarkeContent}
-          />
-
-          <TouchableOpacity onPress={momo}>
-            <Text>닫기</Text>
-          </TouchableOpacity>
-        </ModalView>
-      </Modal_Container>
+      <BookMark_Modal
+        isOpen={isModalVisible}
+        close={closeModal}
+        test_data={test_data}
+        ValueTitle={ValueTitle}
+      />
 
       <BookContent_View>
         <Title_Input_View>
@@ -276,7 +223,7 @@ const BookContents = ({route, navigation}) => {
         <FlatList
           keyExtractor={(item, index) => '#' + index}
           data={test_data.length === 0 ? null : test_data.item.bookSentence}
-          renderItem={(item) => <HelloTest hello={item} />}
+          renderItem={(item) => <HelloTest hello={item} booktest={test_data} />}
         />
       </BookMark_FlatList>
     </Container>
@@ -284,12 +231,3 @@ const BookContents = ({route, navigation}) => {
 };
 
 export default BookContents;
-
-{
-  /* <FlatList
-        keyExtractor={(item, index) => '#' + index}
-        data={sentes}
-        renderItem={(item) => <HelloTest hello={item} />}
-      /> */
-  // 책갈피 관련 항목
-}

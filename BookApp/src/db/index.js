@@ -27,6 +27,7 @@ BookSent.schema = {
 
   properties: {
     bookName: 'string',
+    markColor: 'string',
     Sentence: {
       type: 'string',
       default: '감명 깊었던 문구들이 있나요? 있다면 추가해주세요. ',
@@ -50,7 +51,7 @@ UserTheme.schema = {
 
 let realm = new Realm({
   schema: [User1, BookSent, UserTheme],
-  schemaVersion: 17,
+  schemaVersion: 18,
   migration: (oldRealm, newRealm) => {
     // only apply this change if upgrading to schemaVersion 1
     if (oldRealm.schemaVersion < 1) {

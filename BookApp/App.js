@@ -24,6 +24,7 @@ const CombinedDefaultTheme = {
   colors: {
     ...NavigationDefaultTheme.colors,
     text: 'black',
+    modal: 'white',
   },
 };
 const CombinedDarkTheme = {
@@ -32,6 +33,7 @@ const CombinedDarkTheme = {
   colors: {
     ...NavigationDarkTheme.colors,
     text: 'white',
+    modal: '#333333',
   },
 };
 
