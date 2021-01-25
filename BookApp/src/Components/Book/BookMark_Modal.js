@@ -7,6 +7,7 @@ import Modal from 'react-native-modal';
 import styled from 'styled-components/native';
 import {useTheme} from '@react-navigation/native';
 import Palette from './Palette';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const Modal_Container = styled(Modal)`
   flex: 1;
@@ -39,29 +40,33 @@ const BookMark_Modal = ({isOpen, close, test_data, ValueTitle}) => {
   const {colors} = useTheme();
 
   const momo = () => {
-    realm.write(() => {
-      let city = realm.create(
-        'SentenceStore',
-        {
-          Sentence: bookMarkeContent,
-          bookName: ValueTitle,
-          markColor: bookMarkColor,
-        },
-        true,
-      );
-      let user = realm.create(
-        'User',
-        {
-          createtime: test_data.item.createtime,
-        },
-        true,
-      );
-      user.bookSentence.push(city);
-    });
-    dispatch({type: TEST_DATA_TEST, data: test_data});
+    if (bookMarkeContent === '') {
+      close();
+    } else {
+      realm.write(() => {
+        let city = realm.create(
+          'SentenceStore',
+          {
+            Sentence: bookMarkeContent,
+            bookName: ValueTitle,
+            markColor: bookMarkColor,
+          },
+          true,
+        );
+        let user = realm.create(
+          'User',
+          {
+            createtime: test_data.item.createtime,
+          },
+          true,
+        );
+        user.bookSentence.push(city);
+      });
+      dispatch({type: TEST_DATA_TEST, data: test_data});
 
-    close();
-    setBookMarkeContent('');
+      close();
+      setBookMarkeContent('');
+    }
   };
 
   const handleSelect = (color) => {

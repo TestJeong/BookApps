@@ -1,25 +1,32 @@
-import React, {useState, useLayoutEffect, useEffect} from 'react';
+import React, {useState, useLayoutEffect, useCallback} from 'react';
 import {
-  TextInput,
   View,
   Text,
   ScrollView,
   Button,
   Image,
   FlatList,
+  Keyboard,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
   Alert,
+  TextInput,
+  Dimensions,
+  StyleSheet,
+  Platform,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
 import {useTheme} from '@react-navigation/native';
 
 import realm from '../../db';
 import {
   MY_BOOKLIST_DATA,
+  REMOVE_BOOK_DATA_REQUEST,
   TEST_DATA_TEST,
   TEST_DATA_TEST_RESET,
 } from '../../reducers/BookList';
@@ -30,8 +37,6 @@ const HeaderView = styled.View`
   flex-direction: row;
 `;
 
-const InputViewBox = styled(KeyboardAwareScrollView)``;
-
 const Container = styled.View`
   flex: 1;
   flex-direction: row;
@@ -40,15 +45,14 @@ const Container = styled.View`
 `;
 
 const SearchInput = styled.TextInput`
-  padding: 5px;
   font-size: 17px;
   line-height: 30px;
 `;
 
 const Title_Input_View = styled.View`
-  padding: 5px 20px;
+  padding: 5px 39px;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 10px;
 `;
 
 const Title_Input = styled.TextInput`
@@ -59,17 +63,28 @@ const Title_Input = styled.TextInput`
 `;
 
 const Content_Input_View = styled.View`
+  padding: 5px 25px 5px 25px;
   margin-top: 10px;
-  padding: 5px 15px;
-  height: 85%;
 `;
 
 const BookMark_FlatList = styled.View`
-  margin-top: 30px;
+  position: absolute;
+  right: 5px;
+  margin-top: 85px;
 `;
 
 const BookContent_View = styled.View`
   flex: 1;
+`;
+
+const FixButton = styled.TouchableOpacity`
+  background-color: green;
+  position: absolute;
+  bottom: 0px;
+  height: 30px;
+  right: 0;
+  left: 0;
+  width: 100%;
 `;
 
 const BookContents = ({route, navigation}) => {
@@ -87,13 +102,15 @@ const BookContents = ({route, navigation}) => {
 
   const [isModalVisible, setModalVisible] = useState(false);
 
+  const [edit, setEdit] = useState(false);
+
   const {day} = route.params;
 
   const promptDelete = () => {
     Alert.alert(
-      'Delete Character',
-      'Deleting is irreversible, are you sure?',
-      [{text: 'Cancel'}, {text: 'OK', onPress: book_Delete}],
+      '책 삭제',
+      '정말로 삭제 하시겠습니까?',
+      [{text: '아니요'}, {text: '네', onPress: book_Delete}],
       {cancelable: false},
     );
   };
@@ -106,52 +123,30 @@ const BookContents = ({route, navigation}) => {
     setModalVisible(false);
   };
 
-  const book_Delete = async () => {
-    try {
-      const BookAllData = await realm.objects('User');
-      const BookFilter = await BookAllData.filtered(
-        'bookName != $0',
-        test_data.item.bookName,
-      );
+  const book_Delete = () => {
+    dispatch({type: REMOVE_BOOK_DATA_REQUEST, data: test_data});
 
-      const SortBookDate = await BookFilter.sorted('createtime');
-
-      dispatch({type: MY_BOOKLIST_DATA, data: SortBookDate});
-
-      const BookAll = await realm.objects('User');
-      const BookFil = await BookAll.filtered(
-        'bookName == $0',
-        test_data.item.bookName,
-      );
-
-      const BookMark = await realm.objects('SentenceStore');
-      const BookMarkFil = await BookMark.filtered(
-        'bookName == $0',
-        test_data.item.bookName,
-      );
-
-      dispatch({type: TEST_DATA_TEST_RESET});
-
-      await realm.write(() => {
-        realm.delete(BookFil);
-        realm.delete(BookMarkFil);
-      });
-
-      navigation.navigate('My List');
-    } catch (e) {
-      console.log('BookContens에러입니다', e);
-    }
+    navigation.navigate('My List');
   };
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <Icon
-          color={colors.text}
-          onPress={() => navigation.navigate('My List')}
-          name="arrow-left"
-          size={20}
-        />
+        <HeaderView>
+          <Icon
+            color={colors.text}
+            onPress={() => navigation.navigate('My List')}
+            name="arrow-left"
+            style={{marginRight: 30}}
+            size={20}
+          />
+
+          {edit ? (
+            <Button title="저장" onPress={() => setEdit(false)} />
+          ) : (
+            <Button title="편집" onPress={() => setEdit(true)} />
+          )}
+        </HeaderView>
       ),
       headerRight: () => (
         <HeaderView>
@@ -163,7 +158,7 @@ const BookContents = ({route, navigation}) => {
             size={20}
           />
           <Icon
-            onPress={book_Delete}
+            onPress={promptDelete}
             name="trash"
             color={colors.text}
             size={20}
@@ -171,7 +166,7 @@ const BookContents = ({route, navigation}) => {
         </HeaderView>
       ),
     });
-  }, []);
+  }, [edit]);
 
   navigation.addListener('blur', () => {
     //delted
@@ -205,25 +200,52 @@ const BookContents = ({route, navigation}) => {
           />
         </Title_Input_View>
 
-        <Content_Input_View>
-          <InputViewBox scrollEnabled={false}>
+        {Platform.OS === 'ios' ? (
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : null}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+            <Content_Input_View>
+              <SearchInput
+                multiline
+                editable={edit}
+                style={{color: colors.text}}
+                textAlignVertical={'top'}
+                value={
+                  ValueContent === '이 책은 어땠나요? 당신의 생각을 적어주세요.'
+                    ? null
+                    : ValueContent
+                }
+                placeholder="이 책은 어땠나요? 당신의 생각을 적어주세요."
+                onChangeText={setValueContent}
+              />
+            </Content_Input_View>
+          </KeyboardAvoidingView>
+        ) : (
+          <KeyboardAwareScrollView>
             <SearchInput
+              multiline
               style={{color: colors.text}}
+              editable={edit}
               textAlignVertical={'top'}
-              multiline={true}
-              numberOfLines={10}
-              value={ValueContent}
+              value={
+                ValueContent === '이 책은 어땠나요? 당신의 생각을 적어주세요.'
+                  ? null
+                  : ValueContent
+              }
+              placeholder="이 책은 어땠나요? 당신의 생각을 적어주세요."
               onChangeText={setValueContent}
             />
-          </InputViewBox>
-        </Content_Input_View>
+          </KeyboardAwareScrollView>
+        )}
       </BookContent_View>
 
       <BookMark_FlatList>
         <FlatList
           keyExtractor={(item, index) => '#' + index}
           data={test_data.length === 0 ? null : test_data.item.bookSentence}
-          renderItem={(item) => <HelloTest hello={item} booktest={test_data} />}
+          renderItem={(item) => {
+            return <HelloTest hello={item} />;
+          }}
         />
       </BookMark_FlatList>
     </Container>

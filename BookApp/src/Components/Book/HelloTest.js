@@ -1,25 +1,30 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Button, TouchableOpacity, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  TouchableOpacity,
+  TextInput,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Modal from 'react-native-modal';
+import {useTheme} from '@react-navigation/native';
 
 import realm from '../../db';
-import {useTheme} from '@react-navigation/native';
-import {
-  BOOK_MARK_COLOR,
-  BOOK_MARK_DATA,
-  TEST_DATA_TEST,
-} from '../../reducers/BookList';
+import {BOOK_MARK_COLOR, BOOK_MARK_DATA_REQUEST} from '../../reducers/BookList';
 import Palette from './Palette';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const ImageContentView = styled.TouchableOpacity`
   flex: 1;
   margin-bottom: 25px;
-  align-items: flex-end;
+  align-items: flex-start;
 `;
 
 const Modal_Container = styled(Modal)`
@@ -33,13 +38,13 @@ const ModalView = styled.View`
   align-items: center;
   /* 모달창 크기 조절 */
   width: 330px;
-  height: 250px;
+  height: 350px;
   border-radius: 10px;
 `;
 
-const Text_Input_Container = styled.TextInput`
+const Text_Input_Container = styled.View`
   padding: 5px;
-  height: 150px;
+  height: 250px;
   width: 90%;
   border: 1px;
 `;
@@ -52,75 +57,19 @@ const Button_View = styled.View`
   justify-content: space-around;
 `;
 
-const HelloTest = ({hello, booktest}) => {
+const HelloTest = ({hello}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [paletteColor, setPaletteColor] = useState(hello.item.markColor);
   const [bookMarkeContent, setBookMarkeContent] = useState(hello.item.Sentence);
 
   const dispatch = useDispatch();
-  const {bookMarkColor, test_data} = useSelector((state) => state.BookList);
+  const {bookMarkColor} = useSelector((state) => state.BookList);
 
   const {colors} = useTheme();
 
-  const SentensDelete = async () => {
-    try {
-      const BookMarkData = await realm.objects('SentenceStore');
-      const BookMarkFilter = await BookMarkData.filtered(
-        'Sentence == $0',
-        hello.item.Sentence,
-      );
-
-      console.log(
-        'd',
-        test_data.item.bookSentence.filter(
-          (v) => v.Sentence != BookMarkFilter[0].Sentence,
-        ),
-      );
-
-      /* const Booka = BookMarkF.filtered(
-        'bookSentence == $0',
-        hello.item.Sentence,
-      ); */
-
-      /* console.log('pow', BookAllData[0].bookSentence[0].Sentence); */
-
-      /*  realm.write(() => {
-        realm.delete(BookMarkFilter[0]);
-      }); */
-
-      /* 
-       const BookMark = await BookMarkData.filtered(
-        'Sentence == $0',
-        hello.item.Sentence,
-      );
-
-      realm.write(() => {
-        realm.delete(BookMark);
-      }); */
-
-      dispatch({type: TEST_DATA_TEST, data: test_data});
-
-      setModalVisible(false);
-    } catch (e) {
-      console.log('HelloTest에서 에러가 발생했습니다.', e);
-    }
-
-    /* const BookAllData = await realm.objects('User');
-
-    const BookMarkData = await realm.objects('SentenceStore');
-    const BookMarkFilter = await BookMarkData.filtered(
-      'Sentence == $0',
-      hello.item.Sentence,
-    );
-
-    const SortBookDate = await BookAllData.sorted('createtime');
-
-    realm.write(() => {
-      realm.delete(BookMarkFilter);
-    });
-
+  const SentensDelete = () => {
+    dispatch({type: BOOK_MARK_DATA_REQUEST, data: hello});
     setModalVisible(false);
-    console.log('asdfasd', BookMarkFilter[0].Sentence); */
   };
 
   const momo = () => {
@@ -138,9 +87,7 @@ const HelloTest = ({hello, booktest}) => {
       realm.write(() => {
         BookMarkFilter[0].Sentence = bookMarkeContent;
       });
-    }
-
-    if (BookMarkFilter[0].markColor != paletteColor) {
+    } else if (BookMarkFilter[0].markColor != paletteColor) {
       const BookMarkData = realm.objects('SentenceStore');
       const BookMarkFilter = BookMarkData.filtered(
         'Sentence == $0',
@@ -180,34 +127,43 @@ const HelloTest = ({hello, booktest}) => {
       </TouchableOpacity>
 
       <ImageContentView>
-        <Modal_Container isVisible={isModalVisible}>
-          <ModalView style={{backgroundColor: colors.modal}}>
-            <Text
-              style={{
-                color: colors.text,
-                backgroundColor: paletteColor,
-              }}>
-              글귀
-            </Text>
+        <Modal_Container
+          isVisible={isModalVisible}
+          onBackdropPress={toggleModal}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : null}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+            <ModalView style={{backgroundColor: colors.modal}}>
+              <Text
+                style={{
+                  color: colors.text,
+                  backgroundColor: paletteColor,
+                }}>
+                글귀
+              </Text>
 
-            <Palette onSelect={handleSelect} selected={bookMarkColor} />
+              <Palette onSelect={handleSelect} selected={bookMarkColor} />
+              <Text_Input_Container>
+                <View style={{flex: 1}}>
+                  <TextInput
+                    style={{color: colors.text}}
+                    multiline={true}
+                    value={bookMarkeContent}
+                    onChangeText={setBookMarkeContent}
+                  />
+                </View>
+              </Text_Input_Container>
 
-            <Text_Input_Container
-              style={{color: colors.text}}
-              multiline={true}
-              value={bookMarkeContent}
-              onChangeText={setBookMarkeContent}
-            />
-
-            <Button_View>
-              <TouchableOpacity onPress={SentensDelete}>
-                <Text style={{color: colors.text}}>삭제</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={momo}>
-                <Text style={{color: colors.text}}>저장</Text>
-              </TouchableOpacity>
-            </Button_View>
-          </ModalView>
+              <Button_View>
+                <TouchableOpacity onPress={SentensDelete}>
+                  <Text style={{color: colors.text}}>삭제</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={momo}>
+                  <Text style={{color: colors.text}}>저장</Text>
+                </TouchableOpacity>
+              </Button_View>
+            </ModalView>
+          </KeyboardAvoidingView>
         </Modal_Container>
       </ImageContentView>
     </>

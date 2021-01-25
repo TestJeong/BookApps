@@ -9,14 +9,23 @@ export const init = {
   selected_Book_Data: [],
 
   test_data: [],
+  test_remove: false,
+
   new_test: [],
 
   bookMarkColor: null,
 
+  book_mark_data_loading: false,
+  book_mark_data_done: false,
+  book_mark_data_error: null,
+
+  book_data_loading: false,
+  book_data_done: false,
+  book_data_error: null,
+
   serach_book_data_loading: false,
   serach_book_data_done: false,
   serach_book_data_error: null,
-  search_book_data_reset: false,
   serach_book_data: [],
 };
 
@@ -37,15 +46,19 @@ export const SERACH_BOOK_DATA_SUCCESS = 'SERACH_BOOK_DATA_SUCCESS';
 export const SERACH_BOOK_DATA_ERROR = 'SERACH_BOOK_DATA_ERROR';
 export const SERACH_BOOK_DATA_RESET = 'SERACH_BOOK_DATA_RESET';
 
+export const BOOK_MARK_DATA_REQUEST = 'BOOK_MARK_DATA_REQUEST';
+export const BOOK_MARK_DATA_SUCCESS = 'BOOK_MARK_DATA_SUCCESS';
+export const BOOK_MARK_DATA_ERROR = 'BOOK_MARK_DATA_ERROR';
+
+export const REMOVE_BOOK_DATA_REQUEST = 'REMOVE_BOOK_DATA_REQUEST';
+export const REMOVE_BOOK_DATA_SUCCESS = 'REMOVE_BOOK_DATA_SUCCESS';
+export const REMOVE_BOOK_DATA_ERROR = 'REMOVE_BOOK_DATA_ERROR';
+
 const reducer = (state = init, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
       case BOOK_MARK_COLOR:
         draft.bookMarkColor = action.data;
-        break;
-
-      case BOOK_MARK_DATA:
-        draft.new_test = action.data;
         break;
 
       case TEST_DATA_TEST:
@@ -71,6 +84,8 @@ const reducer = (state = init, action) => {
 
         break;
 
+      ////////////////////////////////////////////
+
       case SERACH_BOOK_DATA_REQUEST:
         draft.serach_book_data_loading = true;
         draft.serach_book_data_done = false;
@@ -79,7 +94,6 @@ const reducer = (state = init, action) => {
         break;
       case SERACH_BOOK_DATA_SUCCESS:
         draft.serach_book_data_loading = false;
-        draft.search_book_data_reset = true;
         draft.serach_book_data_done = true;
         draft.serach_book_data_error = null;
         draft.serach_book_data = action.data;
@@ -90,6 +104,50 @@ const reducer = (state = init, action) => {
         draft.serach_book_data = [];
         draft.serach_book_data_error = action.data;
         break;
+
+      ////////////////////////////////////////////
+
+      case BOOK_MARK_DATA_REQUEST:
+        draft.book_mark_data_loading = true;
+        draft.book_mark_data_done = false;
+        draft.book_mark_data_error = null;
+        draft.book_mark_data = [];
+        break;
+      case BOOK_MARK_DATA_SUCCESS:
+        draft.book_mark_data_loading = false;
+        draft.book_mark_data_done = true;
+        draft.book_mark_data_error = null;
+        draft.test_data = state.test_data;
+        break;
+      case BOOK_MARK_DATA_ERROR:
+        draft.book_mark_data_loading = false;
+        draft.book_mark_data_done = false;
+        draft.book_mark_data = [];
+        draft.book_mark_data_error = action.data;
+        break;
+
+      ////////////////////////////////////////////
+
+      case REMOVE_BOOK_DATA_REQUEST:
+        draft.book_data_loading = true;
+        draft.book_data_done = false;
+        draft.book_data_error = null;
+
+        break;
+      case REMOVE_BOOK_DATA_SUCCESS:
+        draft.book_data_loading = false;
+        draft.book_data_done = true;
+        draft.book_data_error = null;
+        draft.test_data = [];
+        break;
+      case REMOVE_BOOK_DATA_ERROR:
+        draft.book_data_loading = false;
+        draft.book_data_done = false;
+        draft.book_data = [];
+        draft.book_data_error = action.data;
+        break;
+
+      ////////////////////////////////////////////
 
       case SERACH_BOOK_DATA_RESET:
         draft.serach_book_data = [];
