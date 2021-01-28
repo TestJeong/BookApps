@@ -70,18 +70,18 @@ const BookMark_Modal = ({isOpen, close, test_data, ValueTitle}) => {
   };
 
   const handleSelect = (color) => {
-    console.log('what');
     dispatch({type: BOOK_MARK_COLOR, data: color});
   };
 
   return (
-    <Modal_Container isVisible={isOpen}>
+    <Modal_Container isVisible={isOpen} onBackdropPress={close}>
       <ModalView style={{backgroundColor: colors.modal}}>
         <Text style={{backgroundColor: bookMarkColor}}>글귀</Text>
         <Palette onSelect={handleSelect} selected={bookMarkColor} />
         <Text_Input_Container
           multiline={true}
           value={bookMarkeContent}
+          textAlignVertical={'top'}
           onChangeText={setBookMarkeContent}
         />
         <TouchableOpacity onPress={momo}>

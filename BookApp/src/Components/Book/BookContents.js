@@ -11,17 +11,18 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Alert,
-  TextInput,
   Dimensions,
   StyleSheet,
   Platform,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {TextInput} from 'react-native-paper';
 
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styled from 'styled-components/native';
 import {useTheme} from '@react-navigation/native';
+import InputScrollView from 'react-native-input-scroll-view';
 
 import realm from '../../db';
 import {
@@ -75,6 +76,7 @@ const BookMark_FlatList = styled.View`
 
 const BookContent_View = styled.View`
   flex: 1;
+  padding: 10px;
 `;
 
 const FixButton = styled.TouchableOpacity`
@@ -105,6 +107,12 @@ const BookContents = ({route, navigation}) => {
   const [edit, setEdit] = useState(false);
 
   const {day} = route.params;
+
+  const [position, setPosition] = useState(changeSelection);
+
+  const changeSelection = ({nativeEvent: {selection}}) => {
+    setPosition(selection);
+  };
 
   const promptDelete = () => {
     Alert.alert(
@@ -201,9 +209,7 @@ const BookContents = ({route, navigation}) => {
         </Title_Input_View>
 
         {Platform.OS === 'ios' ? (
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : null}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+          <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={100}>
             <Content_Input_View>
               <SearchInput
                 multiline
@@ -221,21 +227,26 @@ const BookContents = ({route, navigation}) => {
             </Content_Input_View>
           </KeyboardAvoidingView>
         ) : (
-          <KeyboardAwareScrollView>
-            <SearchInput
-              multiline
-              style={{color: colors.text}}
-              editable={edit}
-              textAlignVertical={'top'}
-              value={
-                ValueContent === '이 책은 어땠나요? 당신의 생각을 적어주세요.'
-                  ? null
-                  : ValueContent
-              }
-              placeholder="이 책은 어땠나요? 당신의 생각을 적어주세요."
-              onChangeText={setValueContent}
-            />
-          </KeyboardAwareScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <KeyboardAvoidingView behavior="height">
+              <Content_Input_View>
+                <SearchInput
+                  multiline
+                  style={{color: colors.text}}
+                  editable={edit}
+                  textAlignVertical={'top'}
+                  value={
+                    ValueContent ===
+                    '이 책은 어땠나요? 당신의 생각을 적어주세요.'
+                      ? null
+                      : ValueContent
+                  }
+                  placeholder="이 책은 어땠나요? 당신의 생각을 적어주세요."
+                  onChangeText={setValueContent}
+                />
+              </Content_Input_View>
+            </KeyboardAvoidingView>
+          </ScrollView>
         )}
       </BookContent_View>
 

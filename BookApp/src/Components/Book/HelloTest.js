@@ -7,6 +7,7 @@ import {
   TextInput,
   Keyboard,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
   Platform,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -61,6 +62,7 @@ const HelloTest = ({hello}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [paletteColor, setPaletteColor] = useState(hello.item.markColor);
   const [bookMarkeContent, setBookMarkeContent] = useState(hello.item.Sentence);
+  const [edit, setEdit] = useState(false);
 
   const dispatch = useDispatch();
   const {bookMarkColor} = useSelector((state) => state.BookList);
@@ -97,7 +99,7 @@ const HelloTest = ({hello}) => {
         BookMarkFilter[0].markColor = bookMarkColor;
       });
     }
-
+    setEdit(!edit);
     setModalVisible(false);
   };
 
@@ -144,23 +146,33 @@ const HelloTest = ({hello}) => {
 
               <Palette onSelect={handleSelect} selected={bookMarkColor} />
               <Text_Input_Container>
-                <View style={{flex: 1}}>
-                  <TextInput
-                    style={{color: colors.text}}
-                    multiline={true}
-                    value={bookMarkeContent}
-                    onChangeText={setBookMarkeContent}
-                  />
-                </View>
+                <ScrollView>
+                  <View>
+                    <TextInput
+                      style={{color: colors.text}}
+                      multiline={true}
+                      value={bookMarkeContent}
+                      textAlignVertical={'top'}
+                      onChangeText={setBookMarkeContent}
+                      editable={edit}
+                    />
+                  </View>
+                </ScrollView>
               </Text_Input_Container>
 
               <Button_View>
                 <TouchableOpacity onPress={SentensDelete}>
                   <Text style={{color: colors.text}}>삭제</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={momo}>
-                  <Text style={{color: colors.text}}>저장</Text>
-                </TouchableOpacity>
+                {edit ? (
+                  <TouchableOpacity onPress={momo}>
+                    <Text style={{color: colors.text}}>저장</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => setEdit(!edit)}>
+                    <Text>편집</Text>
+                  </TouchableOpacity>
+                )}
               </Button_View>
             </ModalView>
           </KeyboardAvoidingView>
