@@ -1,13 +1,22 @@
 import React, {useState} from 'react';
-import {TextInput, View, Text, TouchableOpacity} from 'react-native';
+import {
+  TextInput,
+  View,
+  Text,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+} from 'react-native';
+
 import {useDispatch, useSelector} from 'react-redux';
-import realm from '../../db';
-import {TEST_DATA_TEST, BOOK_MARK_COLOR} from '../../reducers/BookList';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Modal from 'react-native-modal';
 import styled from 'styled-components/native';
 import {useTheme} from '@react-navigation/native';
+
+import realm from '../../db';
+
+import {TEST_DATA_TEST, BOOK_MARK_COLOR} from '../../reducers/BookList';
 import Palette from './Palette';
-import {ScrollView} from 'react-native-gesture-handler';
 
 const Modal_Container = styled(Modal)`
   flex: 1;
@@ -20,16 +29,30 @@ const ModalView = styled.View`
   align-items: center;
   /* 모달창 크기 조절 */
   width: 330px;
-  height: 250px;
-
+  height: 240px;
   border-radius: 10px;
 `;
 
 const Text_Input_Container = styled.TextInput`
+  font-size: 17px;
+  line-height: 30px;
   padding: 5px;
-  height: 150px;
+  height: 120px;
   width: 90%;
   border: 1px;
+`;
+
+const Button_View = styled.View`
+  flex: 1;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+`;
+
+const Text_Close = styled.Text`
+  font-size: 16px;
+  font-weight: 800;
 `;
 
 const BookMark_Modal = ({isOpen, close, test_data, ValueTitle}) => {
@@ -75,19 +98,34 @@ const BookMark_Modal = ({isOpen, close, test_data, ValueTitle}) => {
 
   return (
     <Modal_Container isVisible={isOpen} onBackdropPress={close}>
-      <ModalView style={{backgroundColor: colors.modal}}>
-        <Text style={{backgroundColor: bookMarkColor}}>글귀</Text>
-        <Palette onSelect={handleSelect} selected={bookMarkColor} />
-        <Text_Input_Container
-          multiline={true}
-          value={bookMarkeContent}
-          textAlignVertical={'top'}
-          onChangeText={setBookMarkeContent}
-        />
-        <TouchableOpacity onPress={momo}>
-          <Text>닫기</Text>
-        </TouchableOpacity>
-      </ModalView>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'position' : null}
+        keyboardVerticalOffset={70}>
+        <ModalView style={{backgroundColor: colors.modal}}>
+          <Icon
+            name="bookmark"
+            size={30}
+            style={{
+              transform: [{rotate: '-90deg'}],
+              color: bookMarkColor,
+            }}
+          />
+          <Palette onSelect={handleSelect} selected={bookMarkColor} />
+          <Text_Input_Container
+            multiline={true}
+            value={bookMarkeContent}
+            textAlignVertical={'top'}
+            onChangeText={setBookMarkeContent}
+          />
+          <Button_View>
+            <TouchableOpacity
+              hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
+              onPress={momo}>
+              <Text_Close>닫기</Text_Close>
+            </TouchableOpacity>
+          </Button_View>
+        </ModalView>
+      </KeyboardAvoidingView>
     </Modal_Container>
   );
 };

@@ -36,22 +36,22 @@ import BookMark_Modal from './BookMark_Modal';
 
 const HeaderView = styled.View`
   flex-direction: row;
+  align-items: center;
 `;
 
 const Container = styled.View`
   flex: 1;
   flex-direction: row;
-
-  padding: 10px;
 `;
 
 const SearchInput = styled.TextInput`
   font-size: 17px;
   line-height: 30px;
+  padding-right: 10px;
 `;
 
 const Title_Input_View = styled.View`
-  padding: 5px 39px;
+  padding: 1px 30px 0px 20px;
   text-align: center;
   margin-top: 10px;
 `;
@@ -64,29 +64,19 @@ const Title_Input = styled.TextInput`
 `;
 
 const Content_Input_View = styled.View`
-  padding: 5px 25px 5px 25px;
   margin-top: 10px;
+  padding: 5px 20px 5px 15px;
 `;
 
 const BookMark_FlatList = styled.View`
   position: absolute;
-  right: 5px;
+  right: 10px;
   margin-top: 85px;
 `;
 
 const BookContent_View = styled.View`
   flex: 1;
   padding: 10px;
-`;
-
-const FixButton = styled.TouchableOpacity`
-  background-color: green;
-  position: absolute;
-  bottom: 0px;
-  height: 30px;
-  right: 0;
-  left: 0;
-  width: 100%;
 `;
 
 const BookContents = ({route, navigation}) => {
@@ -150,9 +140,17 @@ const BookContents = ({route, navigation}) => {
           />
 
           {edit ? (
-            <Button title="저장" onPress={() => setEdit(false)} />
+            <TouchableOpacity
+              hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
+              onPress={() => setEdit(false)}>
+              <Text>저장</Text>
+            </TouchableOpacity>
           ) : (
-            <Button title="편집" onPress={() => setEdit(true)} />
+            <TouchableOpacity
+              hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
+              onPress={() => setEdit(true)}>
+              <Text>편집</Text>
+            </TouchableOpacity>
           )}
         </HeaderView>
       ),
@@ -209,11 +207,15 @@ const BookContents = ({route, navigation}) => {
         </Title_Input_View>
 
         {Platform.OS === 'ios' ? (
-          <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={100}>
+          <KeyboardAvoidingView
+            behavior="padding"
+            keyboardVerticalOffset={50}
+            style={{flex: 1}}>
             <Content_Input_View>
               <SearchInput
                 multiline
                 editable={edit}
+                numberOfLines={500}
                 style={{color: colors.text}}
                 textAlignVertical={'top'}
                 value={
@@ -248,17 +250,16 @@ const BookContents = ({route, navigation}) => {
             </KeyboardAvoidingView>
           </ScrollView>
         )}
+        <BookMark_FlatList>
+          <FlatList
+            keyExtractor={(item, index) => '#' + index}
+            data={test_data.length === 0 ? null : test_data.item.bookSentence}
+            renderItem={(item) => {
+              return <HelloTest hello={item} />;
+            }}
+          />
+        </BookMark_FlatList>
       </BookContent_View>
-
-      <BookMark_FlatList>
-        <FlatList
-          keyExtractor={(item, index) => '#' + index}
-          data={test_data.length === 0 ? null : test_data.item.bookSentence}
-          renderItem={(item) => {
-            return <HelloTest hello={item} />;
-          }}
-        />
-      </BookMark_FlatList>
     </Container>
   );
 };

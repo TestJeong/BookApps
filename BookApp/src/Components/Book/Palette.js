@@ -8,19 +8,30 @@ const Palettes = styled.View`
   flex-direction: column;
 `;
 
-const Colors = styled.TouchableOpacity`
+const Colors = styled.View`
+  width: 100%;
+  padding: 0px 10px;
   flex-direction: row;
+  justify-content: space-around;
 `;
 
 const Items = styled.TouchableOpacity`
   border-radius: 10px;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   border: 2px solid black;
-  margin-left: 5px;
 `;
 
-const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
+const colors = [
+  'red',
+  'orange',
+  'yellow',
+  'green',
+  'blue',
+  'indigo',
+  'violet',
+  '#93B7BE',
+];
 
 const PaletteItem = ({color, active, onClick}) => {
   return <Items style={{backgroundColor: color}} onPress={onClick} />;
