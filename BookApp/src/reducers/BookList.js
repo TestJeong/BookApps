@@ -4,6 +4,9 @@ export const init = {
   user_book_data_done: false,
   user_book_data: [],
 
+  user_bokk_basket_done: false,
+  user_book_basket: [],
+
   user_book_load_data: [],
 
   selected_Book_Data: [],
@@ -30,6 +33,8 @@ export const init = {
 };
 
 export const MY_BOOKLIST_DATA = 'MY_BOOKLIST_DATA';
+
+export const MY_BOOKBASKET_DATA = 'MY_BOOKBASKET_DATA';
 
 export const TEST_DATA_TEST = 'TEST_DATA_TEST';
 export const BOOK_MARK_DATA = 'BOOK_MARK_DATA';
@@ -76,6 +81,12 @@ const reducer = (state = init, action) => {
       case MY_BOOKLIST_DATA:
         draft.user_book_data_done = true;
         draft.user_book_data = action.data;
+
+        break;
+
+      case MY_BOOKBASKET_DATA:
+        draft.user_book_basket_done = true;
+        draft.user_book_basket = action.data;
 
         break;
 

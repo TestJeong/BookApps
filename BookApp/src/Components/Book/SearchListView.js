@@ -4,7 +4,7 @@ import {useDispatch} from 'react-redux';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import realm from '../../db';
-import {MY_BOOKLIST_DATA} from '../../reducers/BookList';
+import {MY_BOOKBASKET_DATA, MY_BOOKLIST_DATA} from '../../reducers/BookList';
 
 const ContainerView = styled.TouchableOpacity`
   border-bottom-width: 1px;
@@ -27,7 +27,7 @@ const TextContentView = styled.View`
   margin: 10px 0px;
 `;
 
-const SearchListView = ({bookData}) => {
+const SearchListView = ({bookData, ScreenName}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {colors} = useTheme();
@@ -55,13 +55,39 @@ const SearchListView = ({bookData}) => {
     });
   };
 
-  const test_touch = () => {
-    const BookDate = realm.objects('User');
-    const SortBookDate = BookDate.sorted('createtime');
-    dispatch({type: MY_BOOKLIST_DATA, data: SortBookDate});
-    book_Selection_Data();
-    navigation.navigate('My List');
+  const book_Selection_Basket = () => {
+    realm.write(() => {
+      realm.create(
+        'BookBasket',
+        {
+          bookName: bookData.item.title,
+          bookThumbnail: bookData.item.thumbnail,
+          bookAuthors: bookData.item.authors[0],
+          bookPublisher: bookData.item.publisher,
+          bookDataTime: bookData.item.datetime,
+          createtime: day,
+        },
+        true,
+      );
+    });
   };
+
+  const test_touch = () => {
+    if (ScreenName === 'My List') {
+      const BookDate = realm.objects('User');
+      const SortBookDate = BookDate.sorted('createtime');
+      dispatch({type: MY_BOOKLIST_DATA, data: SortBookDate});
+      book_Selection_Data();
+      navigation.navigate('My List');
+    } else {
+      const BookDate = realm.objects('BookBasket');
+      const SortBookDate = BookDate.sorted('createtime');
+      dispatch({type: MY_BOOKBASKET_DATA, data: SortBookDate});
+      book_Selection_Basket();
+      navigation.navigate('읽고 싶은 책');
+    }
+  };
+
   return (
     <ContainerView onPress={test_touch}>
       <ImageContentView>

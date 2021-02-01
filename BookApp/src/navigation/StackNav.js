@@ -9,8 +9,7 @@ import MovieContainer from '../Components/Movie';
 import DetailContainer from '../Components/DetailContainer';
 import BookAddPage from '../Components/Book/BookAddPage';
 import BookContents from '../Components/Book/BookContents';
-
-import realm from '../db';
+import Book_Basket from '../Components/Book/Book_Basket';
 
 const Stack = createStackNavigator();
 
@@ -46,7 +45,9 @@ const BookStackNavigator = ({navigation}) => {
           headerLeftContainerStyle: {marginLeft: 20},
           headerRight: () => (
             <Icon
-              onPress={() => navigation.navigate('책 추가')}
+              onPress={() =>
+                navigation.navigate('책 추가', {ScreenName: 'My List'})
+              }
               name="plus"
               size={20}
               color={colors.text}
@@ -72,8 +73,36 @@ const BookStackNavigator = ({navigation}) => {
 
           headerLeft: () => (
             <Icon
-              onPress={() => navigation.navigate('My List')}
+              onPress={() => navigation.goBack()}
               name="arrow-left"
+              size={20}
+              color={colors.text}
+            />
+          ),
+        }}
+      />
+
+      <Stack.Screen
+        name="읽고 싶은 책"
+        component={Book_Basket}
+        options={{
+          headerRightContainerStyle: {marginRight: 20},
+          headerLeftContainerStyle: {marginLeft: 20},
+
+          headerLeft: () => (
+            <Icon
+              onPress={() => navigation.goBack()}
+              name="arrow-left"
+              size={20}
+              color={colors.text}
+            />
+          ),
+          headerRight: () => (
+            <Icon
+              onPress={() =>
+                navigation.navigate('책 추가', {ScreenName: '읽고 싶은 책'})
+              }
+              name="plus"
               size={20}
               color={colors.text}
             />

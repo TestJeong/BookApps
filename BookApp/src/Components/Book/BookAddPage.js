@@ -26,12 +26,14 @@ const KeyboradBox = styled(KeyboardAwareFlatList)`
   margin-top: 10px;
 `;
 
-const BookAddPage = ({navigation}) => {
+const BookAddPage = ({navigation, route}) => {
   const dispatch = useDispatch();
 
   const {serach_book_data} = useSelector((state) => state.BookList);
 
   const [inputValue, setInputValue] = useState('');
+
+  const {ScreenName} = route.params;
 
   useEffect(() => {
     navigation.addListener('blur', () =>
@@ -61,7 +63,9 @@ const BookAddPage = ({navigation}) => {
         data={serach_book_data}
         initialNumToRender={10}
         windowSize={3}
-        renderItem={(item, index) => <SearchListView bookData={item} />}
+        renderItem={(item, index) => (
+          <SearchListView bookData={item} ScreenName={ScreenName} />
+        )}
         keyExtractor={(item, index) => index.toString()}
       />
     </Container>

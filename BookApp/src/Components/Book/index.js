@@ -3,7 +3,7 @@ import {Text, View, ScrollView, Image, SafeAreaView} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import styled from 'styled-components/native';
 import Realm from 'realm';
-import paris55 from '../../../img/paris55.jpg';
+
 import Fraction_Clock from './Fraction_Clock';
 
 const ViewContainer = styled.View`
@@ -49,7 +49,11 @@ const BookContainer = ({navigation}) => {
               onPress={() => navigation.navigate('My List')}>
               LIST&nbsp;。
             </TextColume>
-            <TextColume style={{color: colors.text}}>BASKET&nbsp;。</TextColume>
+            <TextColume
+              style={{color: colors.text}}
+              onPress={() => navigation.navigate('읽고 싶은 책')}>
+              BASKET&nbsp;。
+            </TextColume>
           </View>
         </ViewContainer>
       </Container>

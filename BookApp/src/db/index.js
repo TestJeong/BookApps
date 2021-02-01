@@ -20,6 +20,21 @@ User1.schema = {
   },
 };
 
+class UserBookBasket {}
+
+UserBookBasket.schema = {
+  name: 'BookBasket',
+  primaryKey: 'createtime',
+  properties: {
+    createtime: 'string',
+    bookName: 'string',
+    bookThumbnail: 'string',
+    bookAuthors: 'string',
+    bookPublisher: 'string',
+    bookDataTime: 'string',
+  },
+};
+
 class BookSent {}
 
 BookSent.schema = {
@@ -50,8 +65,8 @@ UserTheme.schema = {
 };
 
 let realm = new Realm({
-  schema: [User1, BookSent, UserTheme],
-  schemaVersion: 18,
+  schema: [User1, BookSent, UserTheme, UserBookBasket],
+  schemaVersion: 20,
   migration: (oldRealm, newRealm) => {
     // only apply this change if upgrading to schemaVersion 1
     if (oldRealm.schemaVersion < 1) {
