@@ -19,18 +19,17 @@ const Items = styled.TouchableOpacity`
   border-radius: 10px;
   width: 25px;
   height: 25px;
-  border: 2px solid black;
 `;
 
 const colors = [
-  'red',
-  'orange',
-  'yellow',
-  'green',
-  'blue',
-  'indigo',
-  'violet',
-  '#93B7BE',
+  '#c84557',
+  '#ff953f',
+  '#ffc325',
+  '#bad252',
+  '#1e94be',
+  '#5e869c',
+  '#b191bd',
+  '#8d8c88',
 ];
 
 const PaletteItem = ({color, active, onClick}) => {

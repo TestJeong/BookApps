@@ -1,5 +1,6 @@
 import React from 'react';
 
+import {Text} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -88,6 +89,12 @@ const BookStackNavigator = ({navigation}) => {
         options={{
           headerRightContainerStyle: {marginRight: 20},
           headerLeftContainerStyle: {marginLeft: 20},
+
+          headerTitle: () => (
+            /*  <Icon name="shopping-basket" size={20} color={colors.text} /> */ <Text>
+              BASKET
+            </Text>
+          ),
 
           headerLeft: () => (
             <Icon

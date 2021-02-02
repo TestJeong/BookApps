@@ -32,28 +32,36 @@ const S_Text_Test = styled.Text`
   font-size: 80px;
   font-weight: 800;
   font-family: 'JosefinSans-Italic';
+  text-align: center;
 `;
 
-const Text_Test = styled.Text`
+const Day_Text = styled.Text`
   font-size: 80px;
   font-weight: 800;
   font-family: 'JosefinSans-Italic';
+  text-align: center;
 `;
 
 const Fraction_Clock = () => {
+  const date = new Date().getDate(); //Current Date
+  const twoDate = date >= 10 ? date : '0' + date;
+  const month = new Date().getMonth() + 1; //Current Month
+  const twoMonth = month >= 10 ? month : '0' + month;
+  const year = new Date().getFullYear(); //Current Year
+
   return (
     <Container>
       <First_View>
-        <Text_Test>20</Text_Test>
+        <Day_Text>{year.toString().substring(2)}</Day_Text>
       </First_View>
       <View>
         <View>
-          <S_Text_Test>01</S_Text_Test>
+          <S_Text_Test>{twoMonth}</S_Text_Test>
         </View>
-        <View style={{height: 10, width: 80, backgroundColor: 'red'}} />
+        <View style={{height: 10, width: 100, backgroundColor: 'red'}} />
 
         <View>
-          <Text_Test style={{lineHeight: 104}}>31</Text_Test>
+          <Day_Text style={{lineHeight: 104}}>{twoDate}</Day_Text>
         </View>
       </View>
     </Container>

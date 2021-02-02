@@ -39,7 +39,7 @@ const Text_Input_Container = styled.TextInput`
   padding: 5px;
   height: 120px;
   width: 90%;
-  border: 1px;
+  border: 0.7px solid #b4baba;
 `;
 
 const Button_View = styled.View`
@@ -112,6 +112,7 @@ const BookMark_Modal = ({isOpen, close, test_data, ValueTitle}) => {
           />
           <Palette onSelect={handleSelect} selected={bookMarkColor} />
           <Text_Input_Container
+            style={{color: colors.text}}
             multiline={true}
             value={bookMarkeContent}
             textAlignVertical={'top'}
@@ -121,7 +122,7 @@ const BookMark_Modal = ({isOpen, close, test_data, ValueTitle}) => {
             <TouchableOpacity
               hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
               onPress={momo}>
-              <Text_Close>닫기</Text_Close>
+              <Text_Close style={{color: '#2653af'}}>닫기</Text_Close>
             </TouchableOpacity>
           </Button_View>
         </ModalView>

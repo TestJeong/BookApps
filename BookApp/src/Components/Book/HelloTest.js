@@ -203,13 +203,13 @@ const HelloTest = ({hello}) => {
                 <Button_Con
                   hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
                   onPress={SentensDelete}>
-                  <Text_Delete>삭제</Text_Delete>
+                  <Text_Delete style={{color: '#cd4d4d'}}>삭제</Text_Delete>
                 </Button_Con>
                 {edit ? (
                   <Button_Con
                     hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
                     onPress={momo}>
-                    <Text_Save_Edit style={{color: colors.text}}>
+                    <Text_Save_Edit style={{color: '#2653af'}}>
                       저장
                     </Text_Save_Edit>
                   </Button_Con>
@@ -217,7 +217,9 @@ const HelloTest = ({hello}) => {
                   <Button_Con
                     hitSlop={{top: 25, bottom: 25, left: 25, right: 25}}
                     onPress={() => setEdit(!edit)}>
-                    <Text_Save_Edit>편집</Text_Save_Edit>
+                    <Text_Save_Edit style={{color: '#2653af'}}>
+                      편집
+                    </Text_Save_Edit>
                   </Button_Con>
                 )}
               </Button_View>

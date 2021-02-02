@@ -26,6 +26,14 @@ export const init = {
   book_data_done: false,
   book_data_error: null,
 
+  basket_data_loading: false,
+  basket_data_done: false,
+  basket_data_error: null,
+
+  move_basket_data_loading: false,
+  move_basket_data_done: false,
+  move_basket_data_error: null,
+
   serach_book_data_loading: false,
   serach_book_data_done: false,
   serach_book_data_error: null,
@@ -58,6 +66,14 @@ export const BOOK_MARK_DATA_ERROR = 'BOOK_MARK_DATA_ERROR';
 export const REMOVE_BOOK_DATA_REQUEST = 'REMOVE_BOOK_DATA_REQUEST';
 export const REMOVE_BOOK_DATA_SUCCESS = 'REMOVE_BOOK_DATA_SUCCESS';
 export const REMOVE_BOOK_DATA_ERROR = 'REMOVE_BOOK_DATA_ERROR';
+
+export const REMOVE_BASKET_REQUEST = 'REMOVE_BASKET_REQUEST';
+export const REMOVE_BASKET_SUCCESS = 'REMOVE_BASKET_SUCCESS';
+export const REMOVE_BASKET_ERROR = 'REMOVE_BASKET_ERROR';
+
+export const MOVE_TO_BASKET_REQUEST = 'MOVE_TO_BASKET_REQUEST';
+export const MOVE_TO_BASKET_SUCCESS = 'MOVE_TO_BASKET_SUCCESS';
+export const MOVE_TO_BASKET_ERROR = 'MOVE_TO_BASKET_ERROR';
 
 const reducer = (state = init, action) => {
   return produce(state, (draft) => {
@@ -156,6 +172,48 @@ const reducer = (state = init, action) => {
         draft.book_data_done = false;
         draft.book_data = [];
         draft.book_data_error = action.data;
+        break;
+
+      ////////////////////////////////////////////
+
+      case REMOVE_BASKET_REQUEST:
+        draft.basket_data_loading = true;
+        draft.basket_data_done = false;
+        draft.basket_data_error = null;
+
+        break;
+      case REMOVE_BASKET_SUCCESS:
+        draft.basket_data_loading = false;
+        draft.basket_data_done = true;
+        draft.basket_data_error = null;
+        draft.test_data = [];
+        break;
+      case REMOVE_BASKET_ERROR:
+        draft.basket_data_loading = false;
+        draft.basket_data_done = false;
+        draft.basket_data = [];
+        draft.basket_data_error = action.data;
+        break;
+
+      ////////////////////////////////////////////
+
+      case MOVE_TO_BASKET_REQUEST:
+        draft.move_basket_data_loading = true;
+        draft.move_basket_data_done = false;
+        draft.move_basket_data_error = null;
+
+        break;
+      case MOVE_TO_BASKET_SUCCESS:
+        draft.move_basket_data_loading = false;
+        draft.move_basket_data_done = true;
+        draft.move_basket_data_error = null;
+
+        break;
+      case MOVE_TO_BASKET_ERROR:
+        draft.move_basket_data_loading = false;
+        draft.move_basket_data_done = false;
+        draft.move_basket_data = [];
+        draft.move_basket_data_error = action.data;
         break;
 
       ////////////////////////////////////////////

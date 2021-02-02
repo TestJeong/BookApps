@@ -1,28 +1,24 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {RectButton} from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import {
-  View,
-  Text,
-  Image,
-  Animated,
-  TouchableOpacity,
-  StyleSheet,
-  I18nManager,
-} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {View, Text, Animated, StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
 import realm from '../../db';
+import {
+  MOVE_TO_BASKET_REQUEST,
+  REMOVE_BASKET_REQUEST,
+} from '../../reducers/BookList';
 
 const ContainerView = styled.View`
   flex-direction: row;
-
-  padding: 5px 15px;
 `;
 
 const ImageContentView = styled.View`
   margin: 10px 0px;
+  flex-direction: row;
 `;
 
 const ImageView = styled.Image`
@@ -34,12 +30,16 @@ const ImageView = styled.Image`
 
 const TextContentView = styled.View`
   margin: 10px 0px;
+
+  width: 72%;
 `;
 
 const BasketListView = ({bookData, ScreenName}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {colors} = useTheme();
+
+  const swiper = useRef();
 
   var date = new Date().getDate(); //Current Date
   var month = new Date().getMonth() + 1; //Current Month
@@ -50,33 +50,80 @@ const BasketListView = ({bookData, ScreenName}) => {
   let day =
     year + '-' + month + '-' + date + '-' + hours + '-' + min + '-' + sec;
 
-  const renderRightAction = (text, color, x, progress) => {
+  const MoveTo_List_Action = (text, color, x, progress) => {
     const trans = progress.interpolate({
       inputRange: [0, 1],
       outputRange: [x, 0],
       extrapolate: 'clamp',
     });
 
+    const MoveToList = () => {
+      dispatch({type: MOVE_TO_BASKET_REQUEST, data: bookData});
+      close();
+    };
+
     return (
       <Animated.View style={{flex: 1, transform: [{translateX: trans}]}}>
-        <RectButton style={[styles.rightAction, {backgroundColor: color}]}>
+        <RectButton
+          onPress={MoveToList}
+          style={[styles.rightAction, {backgroundColor: color}]}>
           <Text style={styles.actionText}>{text}</Text>
         </RectButton>
       </Animated.View>
     );
   };
+
+  const Delete_List_Action = (text, color, x, progress) => {
+    const trans = progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [x, 0],
+      extrapolate: 'clamp',
+    });
+
+    const pressHandler = () => {
+      dispatch({type: REMOVE_BASKET_REQUEST, data: bookData});
+      close();
+    };
+
+    return (
+      <Animated.View style={{flex: 1, transform: [{translateX: trans}]}}>
+        <RectButton
+          onPress={pressHandler}
+          style={[styles.rightAction, {backgroundColor: color}]}>
+          <Text style={styles.actionText}>{text}</Text>
+        </RectButton>
+      </Animated.View>
+    );
+  };
+
   const renderRightActions = (progress) => (
     <View
       style={{
         width: 192,
         flexDirection: 'row',
       }}>
-      {renderRightAction('More', '#ffab00', 192, progress)}
-      {renderRightAction('Flag', '#dd2c00', 128, progress)}
+      {MoveTo_List_Action(
+        <Icon name="check-square" size={30} />,
+        '#2fc4b2',
+        192,
+        progress,
+      )}
+      {Delete_List_Action(
+        <Icon name="trash" size={30} />,
+        '#dd2c00',
+        128,
+        progress,
+      )}
     </View>
   );
+
+  const close = () => {
+    swiper.current.close();
+  };
+
   return (
     <Swipeable
+      ref={swiper}
       friction={2}
       rightThreshold={40}
       renderRightActions={renderRightActions}>
@@ -91,7 +138,12 @@ const BasketListView = ({bookData, ScreenName}) => {
           />
         </ImageContentView>
         <TextContentView>
-          <Text style={{color: colors.text}}>{bookData.item.bookName}</Text>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={{color: colors.text}}>
+            {bookData.item.bookName}
+          </Text>
           <Text style={{color: colors.text}}>
             {bookData.item.bookAuthors} 저
           </Text>

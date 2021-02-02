@@ -9,9 +9,20 @@ import {
   REMOVE_BOOK_DATA_REQUEST,
   REMOVE_BOOK_DATA_SUCCESS,
   REMOVE_BOOK_DATA_ERROR,
+  REMOVE_BASKET_SUCCESS,
+  REMOVE_BASKET_ERROR,
+  REMOVE_BASKET_REQUEST,
+  MOVE_TO_BASKET_REQUEST,
+  MOVE_TO_BASKET_SUCCESS,
+  MOVE_TO_BASKET_ERROR,
 } from '../reducers/BookList';
 import KaKao_Book_API from '../Api/BookAPI';
-import {book_Delete, SentensDelete} from '../db/realmFile';
+import {
+  book_Basket_Delete,
+  book_Delete,
+  SentensDelete,
+  book_Basket_Move,
+} from '../db/realmFile';
 
 function* search_Book_Data(action) {
   try {
@@ -66,6 +77,41 @@ function* remove_Book_Data(action) {
   }
 }
 
+function* remove_Basket_Data(action) {
+  try {
+    yield call(book_Basket_Delete, action.data);
+
+    yield put({
+      type: REMOVE_BASKET_SUCCESS,
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: REMOVE_BASKET_ERROR,
+      data: e,
+      error: true,
+    });
+  }
+}
+
+function* Move_To_Basket_Data(action) {
+  try {
+    yield call(book_Basket_Move, action.data);
+    yield call(book_Basket_Delete, action.data);
+
+    yield put({
+      type: MOVE_TO_BASKET_SUCCESS,
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: MOVE_TO_BASKET_ERROR,
+      data: e,
+      error: true,
+    });
+  }
+}
+
 function* searchBook() {
   yield takeEvery(SERACH_BOOK_DATA_REQUEST, search_Book_Data);
 }
@@ -78,6 +124,20 @@ function* removeBook() {
   yield takeEvery(REMOVE_BOOK_DATA_REQUEST, remove_Book_Data);
 }
 
+function* removeBasket() {
+  yield takeEvery(REMOVE_BASKET_REQUEST, remove_Basket_Data);
+}
+
+function* MoveToBasket() {
+  yield takeEvery(MOVE_TO_BASKET_REQUEST, Move_To_Basket_Data);
+}
+
 export default function* apiSaga() {
-  yield all([fork(searchBook), fork(removeBookMark), fork(removeBook)]);
+  yield all([
+    fork(searchBook),
+    fork(removeBookMark),
+    fork(removeBook),
+    fork(removeBasket),
+    fork(MoveToBasket),
+  ]);
 }
