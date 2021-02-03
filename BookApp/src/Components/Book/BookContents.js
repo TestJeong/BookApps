@@ -46,8 +46,9 @@ const Container = styled.View`
 
 const SearchInput = styled.TextInput`
   font-size: 17px;
-  line-height: 30px;
+  line-height: 25px;
   padding-right: 10px;
+  font-family: 'SeoulNamsanL';
 `;
 
 const Title_Input_View = styled.View`
@@ -58,7 +59,7 @@ const Title_Input_View = styled.View`
 
 const Title_Input = styled.TextInput`
   font-size: 30px;
-  font-weight: bold;
+
   border-bottom-width: 2px;
   border-bottom-color: gray;
 `;
@@ -98,7 +99,7 @@ const BookContents = ({route, navigation}) => {
 
   const {day} = route.params;
 
-  const [position, setPosition] = useState(changeSelection);
+  const [position, setPosition] = useState({start: 0, end: 0});
 
   const changeSelection = ({nativeEvent: {selection}}) => {
     setPosition(selection);
@@ -198,12 +199,21 @@ const BookContents = ({route, navigation}) => {
 
       <BookContent_View>
         <Title_Input_View>
-          <Title_Input
-            selection={{start: 0, end: 0}}
-            value={ValueTitle}
-            onChangeText={setValueTitle}
-            style={{color: colors.text}}
-          />
+          {Platform.OS === 'ios' ? (
+            <Title_Input
+              value={ValueTitle}
+              onChangeText={setValueTitle}
+              style={{color: colors.text}}
+            />
+          ) : (
+            <Title_Input
+              selection={position}
+              onSelectionChange={changeSelection}
+              value={ValueTitle}
+              onChangeText={setValueTitle}
+              style={{color: colors.text, fontFamily: 'SeoulNamsanB'}}
+            />
+          )}
         </Title_Input_View>
 
         {Platform.OS === 'ios' ? (

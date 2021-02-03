@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 
+import {useTheme} from '@react-navigation/native';
 import styled from 'styled-components/native';
 
 const Text_Input_Container = styled.TextInput`
@@ -49,19 +50,25 @@ const Fraction_Clock = () => {
   const twoMonth = month >= 10 ? month : '0' + month;
   const year = new Date().getFullYear(); //Current Year
 
+  const {colors} = useTheme();
+
   return (
     <Container>
       <First_View>
-        <Day_Text>{year.toString().substring(2)}</Day_Text>
+        <Day_Text style={{color: colors.text}}>
+          {year.toString().substring(2)}
+        </Day_Text>
       </First_View>
       <View>
         <View>
-          <S_Text_Test>{twoMonth}</S_Text_Test>
+          <S_Text_Test style={{color: colors.text}}>{twoMonth}</S_Text_Test>
         </View>
         <View style={{height: 10, width: 100, backgroundColor: 'red'}} />
 
         <View>
-          <Day_Text style={{lineHeight: 104}}>{twoDate}</Day_Text>
+          <Day_Text style={{lineHeight: 104, color: colors.text}}>
+            {twoDate}
+          </Day_Text>
         </View>
       </View>
     </Container>

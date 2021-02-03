@@ -91,7 +91,8 @@ const BookStackNavigator = ({navigation}) => {
           headerLeftContainerStyle: {marginLeft: 20},
 
           headerTitle: () => (
-            /*  <Icon name="shopping-basket" size={20} color={colors.text} /> */ <Text>
+            /*  <Icon name="shopping-basket" size={20} color={colors.text} /> */ <Text
+              style={{fontFamily: 'JosefinSans-Italic'}}>
               BASKET
             </Text>
           ),

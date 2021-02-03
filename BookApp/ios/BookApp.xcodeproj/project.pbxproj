@@ -20,6 +20,9 @@
 		5A14CE1EB30E1773B0CD0CDB /* libPods-BookApp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D393D7E8AFC0FCA5C69170D /* libPods-BookApp-tvOSTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		88D450032910CA39C0A8762C /* libPods-BookApp-BookAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C467D5F998444D7AA9E0F1A7 /* libPods-BookApp-BookAppTests.a */; };
+		AD51589025CAC99900C487DD /* SeoulNamsanL.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD51588B25CAC99900C487DD /* SeoulNamsanL.ttf */; };
+		AD51589225CAC99900C487DD /* SeoulNamsanM.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD51588D25CAC99900C487DD /* SeoulNamsanM.ttf */; };
+		AD51589325CAC99900C487DD /* SeoulNamsanB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD51588E25CAC99900C487DD /* SeoulNamsanB.ttf */; };
 		AD98DF6C259EC0B700B67857 /* www in Resources */ = {isa = PBXBuildFile; fileRef = AD98DF6B259EC0B700B67857 /* www */; };
 		ADAFA8C325B0749000575344 /* JosefinSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADAFA8C225B0749000575344 /* JosefinSans-Italic.ttf */; };
 /* End PBXBuildFile section */
@@ -61,6 +64,9 @@
 		73C3A12CB5A68A1DA08C1341 /* Pods-BookApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BookApp.debug.xcconfig"; path = "Target Support Files/Pods-BookApp/Pods-BookApp.debug.xcconfig"; sourceTree = "<group>"; };
 		7AA55C25F7EBF9B351AC37F5 /* Pods-BookApp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BookApp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-BookApp-tvOS/Pods-BookApp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = BookApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AD51588B25CAC99900C487DD /* SeoulNamsanL.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SeoulNamsanL.ttf; sourceTree = "<group>"; };
+		AD51588D25CAC99900C487DD /* SeoulNamsanM.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SeoulNamsanM.ttf; sourceTree = "<group>"; };
+		AD51588E25CAC99900C487DD /* SeoulNamsanB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SeoulNamsanB.ttf; sourceTree = "<group>"; };
 		AD98DF6B259EC0B700B67857 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = BookApp/www; sourceTree = "<group>"; };
 		ADAFA8C225B0749000575344 /* JosefinSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-Italic.ttf"; sourceTree = "<group>"; };
 		ADE82293259A0B8A00535FE5 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
@@ -207,7 +213,10 @@
 		ADE82292259A0AA900535FE5 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				AD51588E25CAC99900C487DD /* SeoulNamsanB.ttf */,
+				AD51588D25CAC99900C487DD /* SeoulNamsanM.ttf */,
 				ADE8229F259A0B9800535FE5 /* AntDesign.ttf */,
+				AD51588B25CAC99900C487DD /* SeoulNamsanL.ttf */,
 				ADE8229C259A0B9800535FE5 /* Entypo.ttf */,
 				ADAFA8C225B0749000575344 /* JosefinSans-Italic.ttf */,
 				ADE8229B259A0B9800535FE5 /* EvilIcons.ttf */,
@@ -388,6 +397,9 @@
 			files = (
 				ADAFA8C325B0749000575344 /* JosefinSans-Italic.ttf in Resources */,
 				AD98DF6C259EC0B700B67857 /* www in Resources */,
+				AD51589025CAC99900C487DD /* SeoulNamsanL.ttf in Resources */,
+				AD51589225CAC99900C487DD /* SeoulNamsanM.ttf in Resources */,
+				AD51589325CAC99900C487DD /* SeoulNamsanB.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);

@@ -41,6 +41,9 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>SeoulNamsanL.ttf</string>
+		<string>SeoulNamsanB.ttf</string>
+		<string>SeoulNamsanM.ttf</string>
 		<string>JosefinSans-Italic.ttf</string>
 		<string>AntDesign.ttf</string>
 		<string>Entypo.ttf</string>
