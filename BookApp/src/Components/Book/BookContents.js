@@ -14,9 +14,9 @@ import {
   Dimensions,
   StyleSheet,
   Platform,
+  TextInput,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {TextInput} from 'react-native-paper';
 
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -59,7 +59,6 @@ const Title_Input_View = styled.View`
 
 const Title_Input = styled.TextInput`
   font-size: 30px;
-
   border-bottom-width: 2px;
   border-bottom-color: gray;
 `;
@@ -219,13 +218,12 @@ const BookContents = ({route, navigation}) => {
         {Platform.OS === 'ios' ? (
           <KeyboardAvoidingView
             behavior="padding"
-            keyboardVerticalOffset={50}
+            keyboardVerticalOffset={100}
             style={{flex: 1}}>
             <Content_Input_View>
               <SearchInput
                 multiline
                 editable={edit}
-                numberOfLines={500}
                 style={{color: colors.text}}
                 textAlignVertical={'top'}
                 value={
